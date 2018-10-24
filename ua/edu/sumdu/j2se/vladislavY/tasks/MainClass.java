@@ -3,11 +3,12 @@ package ua.edu.sumdu.j2se.vladislavY.tasks;
 public class MainClass {
     public static void main(String[] args) {
         Task task = new Task("task", 1);
-        System.out.println(task.isRepeated());
-        System.out.println(task.getRepeatInterval());
-
+        Task task3 = new Task("task3", 2);
+        task.setActive(true);
+        task3.setActive(true);
         ArrayTaskList arr = new ArrayTaskList();
         arr.add(task);
-        System.out.println(arr.size());
+        arr.add(task3);
+        System.out.println(arr.incoming(1, 2).getTask(0).getTitle());
     }
 }
