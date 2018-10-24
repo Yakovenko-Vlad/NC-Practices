@@ -5,5 +5,9 @@ public class MainClass {
         Task task = new Task("task", 1);
         System.out.println(task.isRepeated());
         System.out.println(task.getRepeatInterval());
+
+        ArrayTaskList arr = new ArrayTaskList();
+        arr.add(task);
+        System.out.println(arr.size());
     }
 }
