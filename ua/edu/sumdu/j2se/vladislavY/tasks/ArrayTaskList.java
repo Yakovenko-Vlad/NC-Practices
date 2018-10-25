@@ -9,7 +9,7 @@ public class ArrayTaskList extends TaskList {
     protected Task[] list;
 
     public ArrayTaskList() {
-        list = new Task[1];
+        this.list = new Task[10];
     }
 
     /**
@@ -23,7 +23,7 @@ public class ArrayTaskList extends TaskList {
             throw new Exception("Task cannot be NULL");
         if (list.length - 1 == this.size()) {
             Task[] listHelper = list;
-            list = new Task[this.size() + 2];
+            list = new Task[(list.length * 3) / 2 + 1];
             System.arraycopy(listHelper, 0, list, 0, listHelper.length);
         }
         list[counter++] = task;
