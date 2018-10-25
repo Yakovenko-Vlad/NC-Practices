@@ -2,6 +2,7 @@ package ua.edu.sumdu.j2se.vladislavY.tasks;
 
 /**
  * Main task class
+ *
  * @author Vladisla
  */
 public class Task {
@@ -12,18 +13,16 @@ public class Task {
     private int interval;
     private boolean active;
 
-    public Task(String title, int time) {
-        this.title = title;
-        this.time = time;
-        this.active = false;
+    public Task(String title, int time) throws Exception {
+        this.setTitle(title);
+        this.setTime(time);
+        this.setActive(false);
     }
 
-    public Task(String title, int start, int end, int interval) {
-        this.title = title;
-        this.start = start;
-        this.end = end;
-        this.interval = interval;
-        this.active = false;
+    public Task(String title, int start, int end, int interval) throws Exception {
+        this.setTitle(title);
+        this.setTime(start, end, interval);
+        this.setActive(false);
     }
 
     public String getTitle() {
@@ -46,7 +45,8 @@ public class Task {
         return this.isRepeated() ? start : time;
     }
 
-    public void setTime(int time) {
+    public void setTime(int time) throws Exception {
+        if (time < 0) throw new Exception("time cannot be < 0");
         this.time = time;
         if (isRepeated()) {
             this.start = time;
@@ -63,7 +63,11 @@ public class Task {
         return isRepeated() ? end : time;
     }
 
-    public void setTime(int start, int end, int interval) {
+    public void setTime(int start, int end, int interval) throws Exception {
+        if (start < 0 || end < 0 || interval < 0)
+            throw new Exception("time cannot be <= 0");
+        if (interval == 0)
+            throw new Exception("interval cannot be == 0");
         this.start = start;
         this.end = end;
         this.interval = interval;
@@ -93,9 +97,9 @@ public class Task {
         if (isActive()) {
             if (isRepeated()) {
                 int nextTime = ((current - start) / interval)
-                    * interval + interval + start;
+                        * interval + interval + start;
                 return current < start ? start
-                    : (nextTime > end ? -1 : nextTime);
+                        : (nextTime > end ? -1 : nextTime);
             } else {
                 return time > current ? time : -1;
             }

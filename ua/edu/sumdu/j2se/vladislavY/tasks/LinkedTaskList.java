@@ -1,14 +1,17 @@
 package ua.edu.sumdu.j2se.vladislavY.tasks;
 
-public class LinkedTaskList extends TaskList{
+/**
+ * Tasks holder as a LinkedList
+ *
+ * @author Vladislav
+ */
+public class LinkedTaskList extends TaskList {
     private TaskNode head;
-    public LinkedTaskList(){
-        super();
-        head = null;
-    }
-    class TaskNode {
-        public Task task;
-        public TaskNode link;
+
+    private class TaskNode {
+        private Task task;
+        private TaskNode link;
+
         TaskNode(Task task, TaskNode link) {
             this.task = task;
             this.link = link;
@@ -21,7 +24,9 @@ public class LinkedTaskList extends TaskList{
      * @param task task for adding to the tasks list
      */
     @Override
-    public void add(Task task) {
+    public void add(Task task) throws Exception {
+        if (task == null)
+            throw new Exception("Task cannot be NULL");
         head = new TaskNode(task, head);
         counter++;
     }
@@ -36,27 +41,32 @@ public class LinkedTaskList extends TaskList{
     public boolean remove(Task task) {
         TaskNode helper = head;
         TaskNode helperLink = head;
-        while(helper.link != null){
-            if(helper.task == task) {
-                helperLink = helper.link;
-                helper = null;
-                helper = helperLink;
+        for (; helper != null; helperLink = helper, helper = helper.link) {
+            if (helper.task == task) {
+                helperLink.link = helper.link;
+                if (helper == head)
+                    head = helperLink.link;
+                counter--;
                 return true;
             }
-            helperLink = helper;
-            helper = helper.link;
         }
         return false;
     }
 
     /**
-     * Returns taks by index
+     * Returns task by index
      *
      * @param index task index
      * @return task from array by index
      */
     @Override
     public Task getTask(int index) {
+        TaskNode helper = head;
+        for (int i = 0; helper != null; i++, helper = helper.link) {
+            if (i == index) {
+                return helper.task;
+            }
+        }
         return null;
     }
 
@@ -67,7 +77,15 @@ public class LinkedTaskList extends TaskList{
      * @param to   end of the period
      * @return array of the tasks which will be fulfilled in current period
      */
-    public ArrayTaskList incoming(int from, int to) {
-        return null;
+    public LinkedTaskList incoming(int from, int to) throws Exception {
+        LinkedTaskList incomingList = new LinkedTaskList();
+        TaskNode helper = head;
+        while (helper != null) {
+            if (helper.task.nextTimeAfter(from) <= to && helper.task.nextTimeAfter(from) != -1) {
+                incomingList.add(helper.task);
+            }
+            helper = helper.link;
+        }
+        return incomingList;
     }
 }

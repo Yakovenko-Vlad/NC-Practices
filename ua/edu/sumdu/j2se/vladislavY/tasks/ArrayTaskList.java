@@ -3,11 +3,13 @@ package ua.edu.sumdu.j2se.vladislavY.tasks;
 /**
  * Tasks holder as an ArrayList
  *
- * @author Vladisla
+ * @author Vladislav
  */
-public class ArrayTaskList extends TaskList{
+public class ArrayTaskList extends TaskList {
+    protected Task[] list;
+
     public ArrayTaskList() {
-        super();
+        list = new Task[1];
     }
 
     /**
@@ -16,7 +18,9 @@ public class ArrayTaskList extends TaskList{
      * @param task task for adding to the tasks list
      */
     @Override
-    public void add(Task task) {
+    public void add(Task task) throws Exception {
+        if (task == null)
+            throw new Exception("Task cannot be NULL");
         if (list.length - 1 == this.size()) {
             Task[] listHelper = list;
             list = new Task[this.size() + 2];
@@ -47,7 +51,7 @@ public class ArrayTaskList extends TaskList{
     }
 
     /**
-     * Returns taks by index
+     * Returns task by index
      *
      * @param index task index
      * @return task from array by index
@@ -64,7 +68,7 @@ public class ArrayTaskList extends TaskList{
      * @param to   end of the period
      * @return array of the tasks which will be fulfilled in current period
      */
-    public ArrayTaskList incoming(int from, int to) {
+    public ArrayTaskList incoming(int from, int to) throws Exception {
         ArrayTaskList incomingList = new ArrayTaskList();
         // array contains 1 (last) indefinite item so list[last] is null
         /*for (Task task : this.list) {

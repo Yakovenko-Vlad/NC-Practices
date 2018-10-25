@@ -1,11 +1,15 @@
 package ua.edu.sumdu.j2se.vladislavY.tasks;
 
+/**
+ * Parent class for ArratTaskList and LinkedTaskList
+ *
+ * @author Vladislav
+ */
 public abstract class TaskList {
-    protected Task[] list;
+
     protected int counter;
 
     protected TaskList() {
-        this.list = new Task[1];
     }
 
     /**
@@ -13,7 +17,7 @@ public abstract class TaskList {
      *
      * @param task task for adding to the tasks list
      */
-    public abstract void add(Task task);
+    public abstract void add(Task task) throws Exception;
 
     /**
      * Removes task from the list, if list contains several the same tasks - the first one will be removed
@@ -24,7 +28,7 @@ public abstract class TaskList {
     public abstract boolean remove(Task task);
 
     /**
-     * Returns taks by index
+     * Returns task by index
      *
      * @param index task index
      * @return task from array by index
@@ -33,7 +37,7 @@ public abstract class TaskList {
 
 
     /**
-     * Retunns amount of tasks
+     * Returns amount of tasks
      *
      * @return number of tasks in the array
      */
