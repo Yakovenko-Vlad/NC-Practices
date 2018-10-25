@@ -10,7 +10,7 @@ public class ArrayTaskList {
     private int counter;
 
     public ArrayTaskList() {
-        this.list = new Task[1];
+        this.list = new Task[10];
     }
 
     /**
@@ -19,9 +19,9 @@ public class ArrayTaskList {
      * @param task task for adding to the tasks list
      */
     public void add(Task task) {
-        if (list.length - 1 == this.size()) {
+        if (list.length == this.size()) {
             Task[] listHelper = list;
-            list = new Task[this.size() + 2];
+            list = new Task[(list.length * 3) / 2 + 1];
             System.arraycopy(listHelper, 0, list, 0, listHelper.length);
         }
         list[counter++] = task;
