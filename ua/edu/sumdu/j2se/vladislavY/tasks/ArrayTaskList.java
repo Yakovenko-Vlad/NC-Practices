@@ -21,7 +21,7 @@ public class ArrayTaskList extends TaskList {
     public void add(Task task) throws Exception {
         if (task == null)
             throw new Exception("Task cannot be NULL");
-        if (list.length - 1 == this.size()) {
+        if (list.length == this.size()) {
             Task[] listHelper = list;
             list = new Task[(list.length * 3) / 2 + 1];
             System.arraycopy(listHelper, 0, list, 0, listHelper.length);
