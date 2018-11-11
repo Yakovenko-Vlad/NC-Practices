@@ -72,9 +72,9 @@ public class ArrayTaskList extends TaskList {
      */
     public ArrayTaskList incoming(int from, int to) throws Exception {
         ArrayTaskList incomingList = new ArrayTaskList();
-        Iterator iterator = iterator();
+        Iterator<Task> iterator = iterator();
         while(iterator.hasNext()) {
-            Task task = (Task) iterator.next();
+            Task task = iterator.next();
             if (task.nextTimeAfter(from) <= to && task.nextTimeAfter(from) != -1) {
                 incomingList.add(task);
             }
@@ -83,16 +83,17 @@ public class ArrayTaskList extends TaskList {
     }
 
     @Override
-    public Iterator iterator() {
-        return new Iterator() {
+    public Iterator<Task> iterator() {
+        return new Iterator<Task>() {
             private int current = -1;
+
             @Override
             public boolean hasNext() {
-                return list[current + 1] != null;
+                return ArrayTaskList.this.size() - 1 > current;
             }
 
             @Override
-            public Object next() {
+            public Task next() {
                 return hasNext() ? list[++current] : null;
             }
 
@@ -103,5 +104,42 @@ public class ArrayTaskList extends TaskList {
                 else throw new IllegalStateException();
             }
         };
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ArrayTaskList)) return false;
+        Iterator<Task> iterator = ((ArrayTaskList) o).iterator();
+        Iterator<Task> iterator1 = this.iterator();
+        while (iterator.hasNext() && iterator1.hasNext()){
+            if(!iterator1.next().equals(iterator.next()))
+                return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        String str = "ArrayTaskList contains ";
+        Iterator<Task> iterator = this.iterator();
+        while (iterator.hasNext()){
+            str += iterator.next().toString() + "\n ";
+        }
+        return str;
+    }
+
+    @Override
+    protected ArrayTaskList clone() throws CloneNotSupportedException {
+        ArrayTaskList arrayTaskList = new ArrayTaskList();
+        Iterator<Task> iterator = iterator();
+        while (iterator.hasNext()) {
+            try {
+                arrayTaskList.add(iterator.next());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return arrayTaskList;
     }
 }

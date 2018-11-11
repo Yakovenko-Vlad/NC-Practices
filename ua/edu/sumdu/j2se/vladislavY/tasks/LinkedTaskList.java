@@ -81,9 +81,9 @@ public class LinkedTaskList extends TaskList {
      */
     public LinkedTaskList incoming(int from, int to) throws Exception {
         LinkedTaskList incomingList = new LinkedTaskList();
-        Iterator iterator = iterator();
+        Iterator<Task> iterator = iterator();
         while(iterator.hasNext()) {
-            Task task = (Task) iterator.next();
+            Task task = iterator.next();
             if (task.nextTimeAfter(from) <= to && task.nextTimeAfter(from) != -1) {
                 incomingList.add(task);
             }
@@ -92,17 +92,18 @@ public class LinkedTaskList extends TaskList {
     }
 
     @Override
-    public Iterator iterator() {
-        return new Iterator() {
+    public Iterator<Task> iterator() {
+        return new Iterator<Task>() {
             private TaskNode helper =  new TaskNode(null, head);
             private TaskNode helperLink = null;
+
             @Override
             public boolean hasNext() {
                 return helper.link != null;
             }
 
             @Override
-            public Object next() {
+            public Task next() {
                 if(hasNext()){
                     helperLink = helper.link;
                     helper = helper.link;
@@ -118,5 +119,42 @@ public class LinkedTaskList extends TaskList {
                 else throw new IllegalStateException();
             }
         };
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof LinkedTaskList)) return false;
+        Iterator<Task> iterator = ((LinkedTaskList) o).iterator();
+        Iterator<Task> iterator1 = this.iterator();
+        while (iterator.hasNext() && iterator1.hasNext()){
+            if(!iterator1.next().equals(iterator.next()))
+                return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        String str = "LinkedTaskList contains ";
+        Iterator<Task> iterator = this.iterator();
+        while (iterator.hasNext()){
+            str += iterator.next().toString() + "\n ";
+        }
+        return str;
+    }
+
+    @Override
+    protected LinkedTaskList clone() throws CloneNotSupportedException {
+        LinkedTaskList arrayTaskList = new LinkedTaskList();
+        Iterator<Task> iterator = iterator();
+        while (iterator.hasNext()) {
+            try {
+                arrayTaskList.add(iterator.next());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return arrayTaskList;
     }
 }

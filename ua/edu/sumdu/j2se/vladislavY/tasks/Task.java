@@ -105,4 +105,47 @@ public class Task {
             }
         } else return -1;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || !(o instanceof Task) || this.hashCode() != o.hashCode()) return false;
+        Task task = (Task) o;
+        return time == task.time &&
+                interval == task.interval &&
+                active == task.active &&
+               title.equals(((Task) o).title);
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 23;
+        hash += hash * time;
+        hash += hash * interval;
+        hash += hash * title.length();
+        return hash;
+    }
+
+    @Override
+    public String toString() {
+        return "Task{" +
+                "title='" + title + '\'' +
+                ", time=" + time +
+                ", start=" + start +
+                ", end=" + end +
+                ", interval=" + interval +
+                ", active=" + active +
+                '}';
+    }
+
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        Task task = null;
+        try {
+            task = new Task(this.getTitle(), this.start, this.end, this.interval);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return task;
+    }
 }
