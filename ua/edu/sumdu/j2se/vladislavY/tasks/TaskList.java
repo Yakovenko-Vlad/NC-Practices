@@ -5,7 +5,7 @@ package ua.edu.sumdu.j2se.vladislavY.tasks;
  *
  * @author Vladislav
  */
-public abstract class TaskList {
+public abstract class TaskList implements Iterable {
 
     protected int counter;
 

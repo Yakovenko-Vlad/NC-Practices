@@ -1,5 +1,7 @@
 package ua.edu.sumdu.j2se.vladislavY.tasks;
 
+import java.util.Iterator;
+
 /**
  * Tasks holder as a LinkedList
  *
@@ -79,13 +81,42 @@ public class LinkedTaskList extends TaskList {
      */
     public LinkedTaskList incoming(int from, int to) throws Exception {
         LinkedTaskList incomingList = new LinkedTaskList();
-        TaskNode helper = head;
-        while (helper != null) {
-            if (helper.task.nextTimeAfter(from) <= to && helper.task.nextTimeAfter(from) != -1) {
-                incomingList.add(helper.task);
+        Iterator iterator = iterator();
+        while(iterator.hasNext()) {
+            Task task = (Task) iterator.next();
+            if (task.nextTimeAfter(from) <= to && task.nextTimeAfter(from) != -1) {
+                incomingList.add(task);
             }
-            helper = helper.link;
         }
         return incomingList;
+    }
+
+    @Override
+    public Iterator iterator() {
+        return new Iterator() {
+            private TaskNode helper =  new TaskNode(null, head);
+            private TaskNode helperLink = null;
+            @Override
+            public boolean hasNext() {
+                return helper.link != null;
+            }
+
+            @Override
+            public Object next() {
+                if(hasNext()){
+                    helperLink = helper.link;
+                    helper = helper.link;
+                    return helperLink.task;
+                }
+                return null;
+            }
+
+            @Override
+            public void remove(){
+                if(helperLink != null)
+                    LinkedTaskList.this.remove(helper.task);
+                else throw new IllegalStateException();
+            }
+        };
     }
 }

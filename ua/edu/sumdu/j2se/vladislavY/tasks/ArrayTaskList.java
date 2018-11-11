@@ -1,12 +1,14 @@
 package ua.edu.sumdu.j2se.vladislavY.tasks;
 
+import java.util.Iterator;
+
 /**
  * Tasks holder as an ArrayList
  *
  * @author Vladislav
  */
 public class ArrayTaskList extends TaskList {
-    protected Task[] list;
+    private Task[] list;
 
     public ArrayTaskList() {
         this.list = new Task[10];
@@ -70,22 +72,36 @@ public class ArrayTaskList extends TaskList {
      */
     public ArrayTaskList incoming(int from, int to) throws Exception {
         ArrayTaskList incomingList = new ArrayTaskList();
-        // array contains 1 (last) indefinite item so list[last] is null
-        /*for (Task task : this.list) {
-            try {
-                if (task.nextTimeAfter(from) <= to && task.nextTimeAfter(from) != -1) {
-                    incomingList.add(task);
-                }
-            } catch (NullPointerException e) {
-                break;
-            }
-        }*/
-
-        for (int i = 0; i < this.size(); i++) {
-            if (list[i].nextTimeAfter(from) <= to && list[i].nextTimeAfter(from) != -1) {
-                incomingList.add(list[i]);
+        Iterator iterator = iterator();
+        while(iterator.hasNext()) {
+            Task task = (Task) iterator.next();
+            if (task.nextTimeAfter(from) <= to && task.nextTimeAfter(from) != -1) {
+                incomingList.add(task);
             }
         }
         return incomingList;
+    }
+
+    @Override
+    public Iterator iterator() {
+        return new Iterator() {
+            private int current = -1;
+            @Override
+            public boolean hasNext() {
+                return list[current + 1] != null;
+            }
+
+            @Override
+            public Object next() {
+                return hasNext() ? list[++current] : null;
+            }
+
+            @Override
+            public void remove(){
+                if(current >= 0)
+                    ArrayTaskList.this.remove(list[current--]);
+                else throw new IllegalStateException();
+            }
+        };
     }
 }
