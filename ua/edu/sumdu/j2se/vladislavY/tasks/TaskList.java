@@ -1,11 +1,13 @@
 package ua.edu.sumdu.j2se.vladislavY.tasks;
 
+import java.util.Iterator;
+
 /**
  * Parent class for ArratTaskList and LinkedTaskList
  *
  * @author Vladislav
  */
-public abstract class TaskList {
+public abstract class TaskList implements Iterable {
 
     protected int counter;
 
@@ -43,6 +45,16 @@ public abstract class TaskList {
      */
     public int size() {
         return counter;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        Iterator<Task> iterator = this.iterator();
+        while (iterator.hasNext()){
+            hash += iterator.next().hashCode();
+        }
+        return hash;
     }
 }
 

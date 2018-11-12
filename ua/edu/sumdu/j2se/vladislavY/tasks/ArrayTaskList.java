@@ -1,12 +1,14 @@
 package ua.edu.sumdu.j2se.vladislavY.tasks;
 
+import java.util.Iterator;
+
 /**
  * Tasks holder as an ArrayList
  *
  * @author Vladislav
  */
 public class ArrayTaskList extends TaskList {
-    protected Task[] list;
+    private Task[] list;
 
     public ArrayTaskList() {
         this.list = new Task[10];
@@ -70,22 +72,74 @@ public class ArrayTaskList extends TaskList {
      */
     public ArrayTaskList incoming(int from, int to) throws Exception {
         ArrayTaskList incomingList = new ArrayTaskList();
-        // array contains 1 (last) indefinite item so list[last] is null
-        /*for (Task task : this.list) {
-            try {
-                if (task.nextTimeAfter(from) <= to && task.nextTimeAfter(from) != -1) {
-                    incomingList.add(task);
-                }
-            } catch (NullPointerException e) {
-                break;
-            }
-        }*/
-
-        for (int i = 0; i < this.size(); i++) {
-            if (list[i].nextTimeAfter(from) <= to && list[i].nextTimeAfter(from) != -1) {
-                incomingList.add(list[i]);
+        Iterator<Task> iterator = iterator();
+        while(iterator.hasNext()) {
+            Task task = iterator.next();
+            if (task.nextTimeAfter(from) <= to && task.nextTimeAfter(from) != -1) {
+                incomingList.add(task);
             }
         }
         return incomingList;
+    }
+
+    @Override
+    public Iterator<Task> iterator() {
+        return new Iterator<Task>() {
+            private int current = -1;
+
+            @Override
+            public boolean hasNext() {
+                return ArrayTaskList.this.size() - 1 > current;
+            }
+
+            @Override
+            public Task next() {
+                return hasNext() ? list[++current] : null;
+            }
+
+            @Override
+            public void remove(){
+                if(current >= 0)
+                    ArrayTaskList.this.remove(list[current--]);
+                else throw new IllegalStateException();
+            }
+        };
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ArrayTaskList)) return false;
+        Iterator<Task> iterator = ((ArrayTaskList) o).iterator();
+        Iterator<Task> iterator1 = this.iterator();
+        while (iterator.hasNext() && iterator1.hasNext()){
+            if(!iterator1.next().equals(iterator.next()))
+                return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        String str = "ArrayTaskList contains ";
+        Iterator<Task> iterator = this.iterator();
+        while (iterator.hasNext()){
+            str += iterator.next().toString() + "\n ";
+        }
+        return str;
+    }
+
+    @Override
+    protected ArrayTaskList clone() throws CloneNotSupportedException {
+        ArrayTaskList arrayTaskList = new ArrayTaskList();
+        Iterator<Task> iterator = iterator();
+        while (iterator.hasNext()) {
+            try {
+                arrayTaskList.add(iterator.next());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return arrayTaskList;
     }
 }

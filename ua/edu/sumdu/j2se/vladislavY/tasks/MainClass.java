@@ -8,7 +8,7 @@ public class MainClass {
         Task task4 = null;
 
         try {
-            task = new Task("task", 1, 0, 0);
+            task = new Task("task", 1, 0, 1);
             task3 = new Task("task3", 2);
             task2 = new Task("task2", 2);
             task4 = new Task("task4", 2);
@@ -19,7 +19,7 @@ public class MainClass {
         task.setActive(true);
         task3.setActive(true);
         LinkedTaskList arr = new LinkedTaskList();
-        arr.add(null);
+        arr.add(task);
         arr.add(task2);
         arr.add(task3);
         arr.add(task4);
