@@ -5,7 +5,7 @@ import java.util.Iterator;
 /**
  * Tasks holder as an ArrayList
  *
- * @author Vladislav
+ * @author vladislav
  */
 public class ArrayTaskList extends TaskList {
     private Task[] list;

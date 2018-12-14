@@ -5,9 +5,9 @@ import java.util.Iterator;
 /**
  * Parent class for ArratTaskList and LinkedTaskList
  *
- * @author Vladislav
+ * @author vladislav
  */
-public abstract class TaskList implements Iterable {
+public abstract class TaskList implements Iterable, Cloneable {
 
     protected int counter;
 

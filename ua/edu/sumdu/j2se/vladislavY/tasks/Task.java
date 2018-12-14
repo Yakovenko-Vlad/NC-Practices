@@ -3,9 +3,9 @@ package ua.edu.sumdu.j2se.vladislavY.tasks;
 /**
  * Main task class
  *
- * @author Vladisla
+ * @author vladislav
  */
-public class Task {
+public class Task implements Cloneable {
     private String title;
     private int time;
     private int start;

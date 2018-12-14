@@ -5,7 +5,7 @@ import java.util.Iterator;
 /**
  * Tasks holder as a LinkedList
  *
- * @author Vladislav
+ * @author vladislav
  */
 public class LinkedTaskList extends TaskList {
     private TaskNode head;
