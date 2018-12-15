@@ -64,25 +64,6 @@ public class ArrayTaskList extends TaskList {
         return list[index];
     }
 
-    /**
-     * Returns an array of tasks performed in the current period
-     *
-     * @param from start of the period
-     * @param to   end of the period
-     * @return array of the tasks which will be fulfilled in current period
-     */
-    public ArrayTaskList incoming(Date from, Date to) throws Exception {
-        ArrayTaskList incomingList = new ArrayTaskList();
-        Iterator<Task> iterator = iterator();
-        while(iterator.hasNext()) {
-            Task task = iterator.next();
-            if (task.nextTimeAfter(from).before(to) && task.nextTimeAfter(from).equals(null)) {
-                incomingList.add(task);
-            }
-        }
-        return incomingList;
-    }
-
     @Override
     public Iterator<Task> iterator() {
         return new Iterator<Task>() {
