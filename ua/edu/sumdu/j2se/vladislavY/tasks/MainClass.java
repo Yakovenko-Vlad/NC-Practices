@@ -1,10 +1,10 @@
 package ua.edu.sumdu.j2se.vladislavY.tasks;
 
-import java.util.Date;
+import java.util.*;
 
 public class MainClass {
     public static void main(String[] args) throws Exception {
-        Task task = null;
+        /*Task task = null;
         Task task2 = null;
         Task task3 = null;
         Task task4 = null;
@@ -38,6 +38,18 @@ public class MainClass {
         System.out.println(arr.size());
         //System.out.println(arr.incoming(0, 2).getTask(0).getTitle());
 
-        ArrayTaskList a = (ArrayTaskList) Tasks.incoming(arr, new Date(), new Date());
+        ArrayTaskList a = (ArrayTaskList) Tasks.incoming(arr, new Date(), new Date());*/
+
+        TreeMap<Integer, Set<String>> calendar = new TreeMap<Integer, Set<String>>();
+        Set<String> str = new HashSet<>();
+        str.add("dsa");
+
+        calendar.put(1, str);
+
+        Task t = new Task("test", new Date(new Date().getTime()-5000), new Date(new Date().getTime()+5000), 100);
+        ArrayList<Date> td = Tasks.events(t, new Date(new Date().getTime()-500), new Date(new Date().getTime() + 500));
+        for(Date d : td) {
+            System.out.println(d.getTime());
+        }
     }
 }
