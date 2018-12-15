@@ -1,5 +1,7 @@
 package ua.edu.sumdu.j2se.vladislavY.tasks;
 
+import java.util.Date;
+
 public class MainClass {
     public static void main(String[] args) throws Exception {
         Task task = null;
@@ -7,17 +9,18 @@ public class MainClass {
         Task task3 = null;
         Task task4 = null;
 
-       /* try {
-            task = new Task("task", 1, 0, 1);
-            task3 = new Task("task3", 2);
-            task2 = new Task("task2", 2);
-            task4 = new Task("task4", 2);
+        try {
+            task = new Task("task", new Date(), new Date(), 1);
+            task3 = new Task("task3", new Date());
+            task2 = new Task("task2", new Date());
+            task4 = new Task("task4", new Date());
         } catch (Exception e) {
             System.out.println(e.getMessage());
             return;
         }
         task.setActive(true);
         task3.setActive(true);
+        System.out.println(task.toString());
         LinkedTaskList arr = new LinkedTaskList();
         arr.add(task);
         arr.add(task2);
@@ -33,6 +36,8 @@ public class MainClass {
         System.out.println(arr.getTask(1).getTitle());
         System.out.println(arr.getTask(2).getTitle());
         System.out.println(arr.size());
-        System.out.println(arr.incoming(0, 2).getTask(0).getTitle());*/
+        //System.out.println(arr.incoming(0, 2).getTask(0).getTitle());
+
+        ArrayTaskList a = (ArrayTaskList) Tasks.incoming(arr, new Date(), new Date());
     }
 }

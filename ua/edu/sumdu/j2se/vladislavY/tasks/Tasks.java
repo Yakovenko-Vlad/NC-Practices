@@ -1,7 +1,6 @@
 package ua.edu.sumdu.j2se.vladislavY.tasks;
 
 import java.util.Date;
-import java.util.Iterator;
 
 public class Tasks {
 
@@ -15,8 +14,10 @@ public class Tasks {
     public static Iterable<Task> incoming(Iterable<Task> tasks, Date from, Date to) throws Exception {
         ArrayTaskList incomingList = new ArrayTaskList();
         for (Task task : tasks)
-            if (task.nextTimeAfter(from).before(to) && task.nextTimeAfter(from).equals(null))
-                incomingList.add(task);
+            try {
+                if (task.nextTimeAfter(from).before(to) || task.nextTimeAfter(from).equals(to))
+                    incomingList.add(task);
+            } catch (NullPointerException e) {}
         return incomingList;
     }
 }

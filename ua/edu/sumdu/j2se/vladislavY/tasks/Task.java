@@ -121,9 +121,9 @@ public class Task implements Cloneable {
     @Override
     public int hashCode() {
         int hash = 23;
-        hash += hash * time.getTime();
         hash += hash * interval;
         hash += hash * title.length();
+        if (time != null)  hash += hash * time.getTime();
         return hash;
     }
 
@@ -131,9 +131,9 @@ public class Task implements Cloneable {
     public String toString() {
         return "Task{" +
                 "title='" + title + '\'' +
-                ", time=" + time.toString() +
-                ", start=" + start.toString() +
-                ", end=" + end.toString() +
+                ", time=" + time +
+                ", start=" + start +
+                ", end=" + end +
                 ", interval=" + interval +
                 ", active=" + active +
                 '}';
