@@ -1,5 +1,6 @@
 package ua.edu.sumdu.j2se.vladislavY.tasks;
 
+import java.util.Date;
 import java.util.Iterator;
 
 /**
@@ -79,12 +80,12 @@ public class LinkedTaskList extends TaskList {
      * @param to   end of the period
      * @return array of the tasks which will be fulfilled in current period
      */
-    public LinkedTaskList incoming(int from, int to) throws Exception {
+    public LinkedTaskList incoming(Date from, Date to) throws Exception {
         LinkedTaskList incomingList = new LinkedTaskList();
         Iterator<Task> iterator = iterator();
         while(iterator.hasNext()) {
             Task task = iterator.next();
-            if (task.nextTimeAfter(from) <= to && task.nextTimeAfter(from) != -1) {
+            if (task.nextTimeAfter(from).before(to) && task.nextTimeAfter(from).equals(null)) {
                 incomingList.add(task);
             }
         }
@@ -146,15 +147,15 @@ public class LinkedTaskList extends TaskList {
 
     @Override
     protected LinkedTaskList clone() throws CloneNotSupportedException {
-        LinkedTaskList arrayTaskList = new LinkedTaskList();
+        LinkedTaskList linkedTaskList = new LinkedTaskList();
         Iterator<Task> iterator = iterator();
         while (iterator.hasNext()) {
             try {
-                arrayTaskList.add(iterator.next());
+                linkedTaskList.add(iterator.next());
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-        return arrayTaskList;
+        return linkedTaskList;
     }
 }

@@ -7,7 +7,7 @@ public class MainClass {
         Task task3 = null;
         Task task4 = null;
 
-        try {
+       /* try {
             task = new Task("task", 1, 0, 1);
             task3 = new Task("task3", 2);
             task2 = new Task("task2", 2);
@@ -33,6 +33,6 @@ public class MainClass {
         System.out.println(arr.getTask(1).getTitle());
         System.out.println(arr.getTask(2).getTitle());
         System.out.println(arr.size());
-        System.out.println(arr.incoming(0, 2).getTask(0).getTitle());
+        System.out.println(arr.incoming(0, 2).getTask(0).getTitle());*/
     }
 }
