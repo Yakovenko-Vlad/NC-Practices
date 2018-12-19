@@ -1,5 +1,6 @@
 package ua.edu.sumdu.j2se.vladislavY.tasks;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -7,7 +8,7 @@ import java.util.Date;
  *
  * @author vladislav
  */
-public class Task implements Cloneable {
+public class Task implements Cloneable, Serializable {
     private String title;
     private Date time;
     private Date start;
@@ -76,7 +77,7 @@ public class Task implements Cloneable {
     }
 
     public int getRepeatInterval() {
-        return interval / 1000;
+        return interval;
     }
 
     /**

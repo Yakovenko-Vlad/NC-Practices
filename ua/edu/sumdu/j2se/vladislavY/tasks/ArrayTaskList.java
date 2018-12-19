@@ -1,6 +1,5 @@
 package ua.edu.sumdu.j2se.vladislavY.tasks;
 
-import java.util.Date;
 import java.util.Iterator;
 
 /**

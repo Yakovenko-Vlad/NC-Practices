@@ -1,5 +1,6 @@
 package ua.edu.sumdu.j2se.vladislavY.tasks;
 
+import java.io.Serializable;
 import java.util.Iterator;
 
 /**
@@ -7,7 +8,7 @@ import java.util.Iterator;
  *
  * @author vladislav
  */
-public abstract class TaskList implements Iterable, Cloneable {
+public abstract class TaskList implements Iterable<Task>, Cloneable, Serializable {
 
     protected int counter;
 
