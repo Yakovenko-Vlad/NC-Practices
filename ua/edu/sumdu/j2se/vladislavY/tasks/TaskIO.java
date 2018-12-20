@@ -38,8 +38,10 @@ public class TaskIO {
         DataInputStream dataInputStream = new DataInputStream(in);
         try {
             int tasksSize = dataInputStream.readInt();
+            //System.out.println(tasksSize);
             for (int i = 0; i < tasksSize; i++) {
                 Task task;
+                System.out.println(i);
                 String title = dataInputStream.readUTF();
                 boolean isActive = dataInputStream.readBoolean();
                 int interval = dataInputStream.readInt();
@@ -136,13 +138,12 @@ public class TaskIO {
     public static void read(TaskList tasks, Reader in) throws IOException {
         try {
             BufferedReader reader = new BufferedReader(in);
-            String line = null;
+            String line;
             while ((line = reader.readLine()) != null) {
-                if (line.contains("at")) {
+                if (line.contains("at"))
                     tasks.add(new Task(parseTitle(line), parseDate(line)[0]));
-                } else {
-
-                }
+                else
+                    tasks.add(new Task(parseTitle(line), parseDate(line)[0], parseDate(line)[1], parseInterval(line)));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -151,30 +152,16 @@ public class TaskIO {
         }
     }
 
-    public static Task parseRepeatedTask(String line) throws Exception {
-        Date date = null;
-        /*for(String str : line.split(" ")) {
-            if(str.contains("[")) {
-                if(str.matches("[a-zA-Z]")) {
-
-                } else {
-                    System.out.println(str);
-                    date = parseDate(str);
-                }
-            }
-        }*/
-        return new Task(parseTitle(line), parseDate(line)[0], parseDate(line)[1], parseInterval(line));
-    }
-
     public static int parseInterval(String line) {
-        String[] numbers = line.substring(line.lastIndexOf("["), line.lastIndexOf("]")).split(" ");
-        
-        System.out.println(numbers);
-        return 0;
+        String[] numbers = line.substring(line.lastIndexOf("[") + 1, line.lastIndexOf("]")).split(" ");
+        int interval = Integer.parseInt(numbers[0]) * 3600;
+        interval += Integer.parseInt(numbers[2]) * 60;
+        interval += Integer.parseInt(numbers[4]);
+        return interval;
     }
 
     public static String parseTitle(String line) {
-        return line.substring(1, line.lastIndexOf("\""));
+        return line.substring(1, line.lastIndexOf("\"")).replaceAll("\"\"", "\"");
     }
 
     public static Date[] parseDate(String line) throws ParseException {
@@ -185,6 +172,7 @@ public class TaskIO {
             dates[counter] = format.parse(line, new ParsePosition(i));
         return dates;
     }
+
     public static void writeText(TaskList tasks, File file) {
         try {
             FileWriter fileWriter = new FileWriter(file);
