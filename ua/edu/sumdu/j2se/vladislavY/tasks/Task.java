@@ -74,6 +74,7 @@ public class Task implements Cloneable, Serializable {
         this.start = start;
         this.end = end;
         this.interval = interval;
+        this.time = start;
     }
 
     public int getRepeatInterval() {

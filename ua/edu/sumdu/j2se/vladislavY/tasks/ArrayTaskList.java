@@ -95,6 +95,7 @@ public class ArrayTaskList extends TaskList {
         Iterator<Task> iterator1 = this.iterator();
         while (iterator.hasNext() && iterator1.hasNext()){
             if(!iterator1.next().equals(iterator.next()))
+                System.out.println("FALSE!!!!!!!");
                 return false;
         }
         return true;

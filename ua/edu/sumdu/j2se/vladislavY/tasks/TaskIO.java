@@ -13,7 +13,7 @@ public class TaskIO {
     public static void write(TaskList tasks, OutputStream out) throws IOException {
         DataOutputStream dataOutputStream = new DataOutputStream(out);
         try {
-            dataOutputStream.write(tasks.size());
+            dataOutputStream.writeInt(tasks.size());
             for (Task task : tasks) {
                 dataOutputStream.writeInt(task.getTitle().length());
                 dataOutputStream.writeUTF(task.getTitle());
@@ -22,9 +22,8 @@ public class TaskIO {
                 if (task.isRepeated()) {
                     dataOutputStream.writeLong(task.getStartTime().getTime());
                     dataOutputStream.writeLong(task.getEndTime().getTime());
-                } else {
+                } else
                     dataOutputStream.writeLong(task.getTime().getTime());
-                }
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -37,18 +36,17 @@ public class TaskIO {
     public static void read(TaskList tasks, InputStream in) throws IOException {
         DataInputStream dataInputStream = new DataInputStream(in);
         try {
-            int tasksSize = dataInputStream.readInt();
-            //System.out.println(tasksSize);
-            for (int i = 0; i < tasksSize; i++) {
+            int listSize = dataInputStream.readInt();
+            for (int i = 0; i < listSize; i++) {
                 Task task;
-                System.out.println(i);
+                int titleLength = dataInputStream.readInt();
                 String title = dataInputStream.readUTF();
                 boolean isActive = dataInputStream.readBoolean();
                 int interval = dataInputStream.readInt();
                 if (interval != 0) {
                     Date start = new Date(dataInputStream.readLong());
                     Date end = new Date(dataInputStream.readLong());
-                    task = new Task(title, start, end, interval);
+                    task = new Task(title, start, end, interval / 1000);
                 } else {
                     Date time = new Date(dataInputStream.readLong());
                     task = new Task(title, time);
@@ -154,9 +152,10 @@ public class TaskIO {
 
     public static int parseInterval(String line) {
         String[] numbers = line.substring(line.lastIndexOf("[") + 1, line.lastIndexOf("]")).split(" ");
-        int interval = Integer.parseInt(numbers[0]) * 3600;
-        interval += Integer.parseInt(numbers[2]) * 60;
-        interval += Integer.parseInt(numbers[4]);
+        int interval  = 0;
+        if(numbers.length > 1) interval += Integer.parseInt(numbers[0]) * 3600;
+        if(numbers.length > 3) interval += Integer.parseInt(numbers[2]) * 60;
+        if(numbers.length > 5) interval += Integer.parseInt(numbers[4]);
         return interval;
     }
 

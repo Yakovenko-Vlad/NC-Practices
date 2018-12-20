@@ -54,59 +54,30 @@ public class MainClass {
         Task t = new Task("test1 \"best\" test", new Date(new Date().getTime()-5000), new Date(new Date().getTime()+5000), 10000);
         Task t2 = new Task("test2", new Date());
         t2.setActive(true);
-//        System.out.println(t.toString());
-//        System.out.println(TaskIO.dateFormater(t2.getTime()));
-//        System.out.println( "\"" + t.getTitle().replaceAll("\"", "\"\"") + "\"");
-//        System.out.println(t.getRepeatInterval());
-//        System.out.println(TaskIO.intervalFormater(t.getRepeatInterval()));
         ArrayTaskList arrayTaskList = new ArrayTaskList();
         arrayTaskList.add(t);
         arrayTaskList.add(t2);
-        TaskIO.writeText(arrayTaskList, new File("test.txt"));
+        TaskIO.writeBinary(arrayTaskList, new File("test.txt"));
         ArrayTaskList arrayTaskList1 = new ArrayTaskList();
-        TaskIO.readText(arrayTaskList1, new File("test.txt"));
-        System.out.println(arrayTaskList1.getTask(0).getTitle());
-        System.out.println(arrayTaskList1.getTask(0).getStartTime());
-        System.out.println(arrayTaskList1.getTask(0).getEndTime());
-        System.out.println(arrayTaskList1.getTask(0).getRepeatInterval());
+        TaskIO.readBinary(arrayTaskList1, new File("test.txt"));
+        System.out.println("Binary IO test");
+        for(Task task : arrayTaskList1) {
+            System.out.println(task.toString());
+        }
 
-        System.out.println(arrayTaskList.getTask(0).getTitle());
-        System.out.println(arrayTaskList.getTask(0).getStartTime());
-        System.out.println(arrayTaskList.getTask(0).getEndTime());
-        System.out.println(arrayTaskList.getTask(0).getRepeatInterval());
-
-
+        System.out.println("\nText IO test");
         ArrayTaskList arrayTaskList2 = new ArrayTaskList();
         TaskIO.writeBinary(arrayTaskList, new File("test1.txt"));
         TaskIO.readBinary(arrayTaskList2, new File("test1.txt"));
-        System.out.println(arrayTaskList2.getTask(0).getTitle());
-        System.out.println(arrayTaskList2.getTask(0).getStartTime());
-        System.out.println(arrayTaskList2.getTask(0).getEndTime());
-        System.out.println(arrayTaskList2.getTask(0).getRepeatInterval());
-//        String str1 = "\"test2\" at [2018-12-19 00:36:28.818] active.";
-//        String str2 = "\"test1 \"\"best\"\" test\" from [2018-12-19 02:11:55.134] to [2018-12-19 02:12:05.134] every [2 hours 46 minutes 40 seconds];";
-//        str1.matches("\"\\s*\"");
-//        System.out.println(str1.matches("/active/g"));
-//        //TaskIO.parseNotRepeatedTask(str1);
-//        String date = "[2018-12-19 00:36:28.818]";
-//        SimpleDateFormat format = new SimpleDateFormat();
-//        format.applyPattern(TaskIO.DATE_PATTERN);
-//        Date docDate= format.parse(str2, new ParsePosition(str2.indexOf("[")));
-//        System.out.println(docDate);
-//        for (int i = str2.indexOf("["); i > 0; i = str2.indexOf("[", i + 1)){
-//            System.out.println(i);
-//        }
-//        //TaskIO.parseInterval(str2);
-//        System.out.println(str2.substring(str2.lastIndexOf("[") +1 , str2.lastIndexOf("]")).split(" [a-zA-Z]"));
-//        String[] a = str2.substring(str2.lastIndexOf("[") +1 , str2.lastIndexOf("]")).split(" ");
-//        for(String s : a){
-//            System.out.println(s);
-//        }
-        /*Pattern pattern = Pattern.compile("[\]]{1}.*[]{1}"); //\[\d\S*\]
-        Matcher matcher = pattern.matcher(str2);
-        if (matcher.find())
-        {
-            System.out.println(matcher.group(0));
-        }*/
+        for(Task task : arrayTaskList2) {
+            System.out.println(task.toString());
+        }
+
+        ArrayTaskList arrayTaskList3 = new ArrayTaskList();
+        String str2 = "\"B\" from [2018-12-20 12:51:01.551] to [2018-12-21 12:51:01.551] every [1 hour ].";
+        System.out.println(TaskIO.parseTitle(str2));
+        System.out.println(TaskIO.parseDate(str2)[0]);
+        System.out.println(TaskIO.parseDate(str2)[1]);
+        System.out.println(TaskIO.parseInterval(str2));
     }
 }
