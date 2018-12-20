@@ -72,12 +72,5 @@ public class MainClass {
         for(Task task : arrayTaskList2) {
             System.out.println(task.toString());
         }
-
-        ArrayTaskList arrayTaskList3 = new ArrayTaskList();
-        String str2 = "\"B\" from [2018-12-20 12:51:01.551] to [2018-12-21 12:51:01.551] every [1 hour ].";
-        System.out.println(TaskIO.parseTitle(str2));
-        System.out.println(TaskIO.parseDate(str2)[0]);
-        System.out.println(TaskIO.parseDate(str2)[1]);
-        System.out.println(TaskIO.parseInterval(str2));
     }
 }

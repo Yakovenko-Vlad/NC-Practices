@@ -95,6 +95,7 @@ public class TaskIO {
                     out.append(" from " + dateFormater(task.getStartTime()) + " to ");
                     out.append(dateFormater(task.getEndTime()) + " every ");
                     out.append(intervalFormater(task.getRepeatInterval()));
+                    out.append(task.isActive() ? " active" : " inactive");
                 }
                 if (counter++ != tasks.size() - 1) {
                     out.append(";");
@@ -138,16 +139,26 @@ public class TaskIO {
             BufferedReader reader = new BufferedReader(in);
             String line;
             while ((line = reader.readLine()) != null) {
-                if (line.contains("at"))
-                    tasks.add(new Task(parseTitle(line), parseDate(line)[0]));
-                else
-                    tasks.add(new Task(parseTitle(line), parseDate(line)[0], parseDate(line)[1], parseInterval(line)));
+                if (line.contains("at")){
+                    Task task = new Task(parseTitle(line), parseDate(line)[0]);
+                    task.setActive(checkActive(line));
+                    tasks.add(task);
+                }
+                else {
+                    Task task = new Task(parseTitle(line), parseDate(line)[0], parseDate(line)[1], parseInterval(line));
+                    task.setActive(checkActive(line));
+                    tasks.add(task);
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
             in.close();
         }
+    }
+
+    public static boolean checkActive(String line) {
+        return line.contains("inactive") ? false : true;
     }
 
     public static int parseInterval(String line) {
