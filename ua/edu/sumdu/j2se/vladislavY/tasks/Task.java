@@ -1,27 +1,30 @@
 package ua.edu.sumdu.j2se.vladislavY.tasks;
 
+import java.io.Serializable;
+import java.util.Date;
+
 /**
  * Main task class
  *
  * @author vladislav
  */
-public class Task implements Cloneable {
+public class Task implements Cloneable, Serializable {
     private String title;
-    private int time;
-    private int start;
-    private int end;
+    private Date time;
+    private Date start;
+    private Date end;
     private int interval;
     private boolean active;
 
-    public Task(String title, int time) throws Exception {
+    public Task(String title, Date time) throws Exception {
         this.setTitle(title);
         this.setTime(time);
         this.setActive(false);
     }
 
-    public Task(String title, int start, int end, int interval) throws Exception {
+    public Task(String title, Date start, Date end, int interval) throws Exception {
         this.setTitle(title);
-        this.setTime(start, end, interval);
+        this.setTime(start, end, interval * 1000);
         this.setActive(false);
     }
 
@@ -41,12 +44,12 @@ public class Task implements Cloneable {
         this.active = active;
     }
 
-    public int getTime() {
+    public Date getTime() {
         return this.isRepeated() ? start : time;
     }
 
-    public void setTime(int time) throws Exception {
-        if (time < 0) throw new Exception("time cannot be < 0");
+    public void setTime(Date time) throws Exception {
+        if (time.equals(null)) throw new Exception("time cannot be NULL");
         this.time = time;
         if (isRepeated()) {
             this.start = time;
@@ -55,22 +58,23 @@ public class Task implements Cloneable {
         }
     }
 
-    public int getStartTime() {
+    public Date getStartTime() {
         return isRepeated() ? start : time;
     }
 
-    public int getEndTime() {
+    public Date getEndTime() {
         return isRepeated() ? end : time;
     }
 
-    public void setTime(int start, int end, int interval) throws Exception {
-        if (start < 0 || end < 0 || interval < 0)
-            throw new Exception("time cannot be <= 0");
-        if (interval == 0)
-            throw new Exception("interval cannot be == 0");
+    public void setTime(Date start, Date end, int interval) throws Exception {
+        if (start.equals(null) || end.equals(null))
+            throw new Exception("time cannot be NULL");
+        if (interval <= 0)
+            throw new Exception("interval cannot be <= 0");
         this.start = start;
         this.end = end;
         this.interval = interval;
+        this.time = start;
     }
 
     public int getRepeatInterval() {
@@ -91,19 +95,18 @@ public class Task implements Cloneable {
      *
      * @param current current time
      * @return next task time after current time OR
-     * `-1` if the next time will be after the end of the task
+     * `null` if the next time will be after the end of the task
      */
-    public int nextTimeAfter(int current) {
+    public Date nextTimeAfter(Date current) {
         if (isActive()) {
             if (isRepeated()) {
-                int nextTime = ((current - start) / interval)
-                        * interval + interval + start;
-                return current < start ? start
-                        : (nextTime > end ? -1 : nextTime);
+                Date nextTime = new Date(((current.getTime() - start.getTime()) / interval)
+                        * interval + interval + start.getTime());
+                return current.before(start) ? start : (nextTime.after(end) ? null : nextTime);
             } else {
-                return time > current ? time : -1;
+                return time.after(current) ? time : null;
             }
-        } else return -1;
+        } else return null;
     }
 
     @Override
@@ -111,18 +114,18 @@ public class Task implements Cloneable {
         if (this == o) return true;
         if (o == null || !(o instanceof Task) || this.hashCode() != o.hashCode()) return false;
         Task task = (Task) o;
-        return time == task.time &&
+        return time.equals(task.time) &&
                 interval == task.interval &&
                 active == task.active &&
-               title.equals(((Task) o).title);
+                title.equals(((Task) o).title);
     }
 
     @Override
     public int hashCode() {
         int hash = 23;
-        hash += hash * time;
         hash += hash * interval;
         hash += hash * title.length();
+        if (time != null)  hash += hash * time.getTime();
         return hash;
     }
 
