@@ -1,4 +1,4 @@
-package ua.edu.sumdu.j2se.vladislavY.tasks;
+package model;
 
 import java.util.*;
 

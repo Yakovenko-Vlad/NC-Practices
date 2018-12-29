@@ -1,4 +1,4 @@
-package ua.edu.sumdu.j2se.vladislavY.tasks;
+package model;
 
 import java.io.*;
 import java.text.FieldPosition;
@@ -102,7 +102,7 @@ public class TaskIO {
                     out.write(System.getProperty("line.separator"));
                 }
             }
-            out.write(".");
+            out.write("");
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
