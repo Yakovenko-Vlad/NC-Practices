@@ -197,7 +197,7 @@ public class TaskIO {
             FileReader fileReader = new FileReader(file);
             read(tasks, fileReader);
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("File is not created");
         }
     }
 }

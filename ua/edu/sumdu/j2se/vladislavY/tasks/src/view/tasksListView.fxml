@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity"
+            minHeight="-Infinity" minWidth="-Infinity"
+            prefHeight="400.0" prefWidth="550.0"
+            xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2"
+            fx:controller="controller.Controller">
+
+    <children>
+
+        <TableView fx:id="tasks" layoutX="8.0" layoutY="62.0" prefHeight="324.0" prefWidth="530.0">
+            <columns>
+                <TableColumn prefWidth="150.0" text="Title" fx:id="title" />
+                <TableColumn prefWidth="100.0" text="Start" fx:id="startDate" />
+                <TableColumn prefWidth="100.0" text="End" fx:id="endDate" />
+                <TableColumn prefWidth="100.0" text="Interval" fx:id="interval" />
+                <TableColumn prefWidth="80.0" text="Repeated" fx:id="isRepeated" />
+            </columns>
+        </TableView>
+
+        <Label layoutX="14.0" layoutY="18.0" text="Tasks list">
+            <font>
+                <Font name="Verdana" size="24.0" />
+            </font>
+        </Label>
+
+    </children>
+</AnchorPane>
