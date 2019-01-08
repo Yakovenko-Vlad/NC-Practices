@@ -1,3 +1,5 @@
+package ua.edu.sumdu.j2se.vladislavY.tasks;
+
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
@@ -5,11 +7,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-import model.ArrayTaskList;
-import model.LinkedTaskList;
-import model.Task;
-import model.TaskIO;
-import MainClass;
+import ua.edu.sumdu.j2se.vladislavY.tasks.model.ArrayTaskList;
+import ua.edu.sumdu.j2se.vladislavY.tasks.model.TaskIO;
+
 
 import java.io.File;
 

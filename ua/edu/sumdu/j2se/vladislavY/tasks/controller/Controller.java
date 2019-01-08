@@ -1,4 +1,4 @@
-package controller;
+package ua.edu.sumdu.j2se.vladislavY.tasks.controller;
 
 import com.sun.tools.javac.Main;
 import javafx.beans.value.ObservableValue;
@@ -8,9 +8,9 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.util.Callback;
-import model.ArrayTaskList;
-import model.Task;
-import model.Tasks;
+import ua.edu.sumdu.j2se.vladislavY.tasks.MainClass;
+import ua.edu.sumdu.j2se.vladislavY.tasks.model.Task;
+import ua.edu.sumdu.j2se.vladislavY.tasks.model.Tasks;
 
 import java.util.*;
 
@@ -41,7 +41,7 @@ public class Controller {
     public Controller() throws Exception {
         Calendar cal = Calendar.getInstance();
         cal.add(Calendar.DAY_OF_MONTH, 1);
-        calendar = Tasks.calendar(Main, new Date(), cal.getTime());
+        calendar = Tasks.calendar(MainClass.getTasks(), new Date(), cal.getTime());
         usersData =  FXCollections.observableArrayList(calendar.entrySet());
     }
 

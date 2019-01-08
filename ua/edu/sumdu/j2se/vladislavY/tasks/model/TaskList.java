@@ -1,4 +1,4 @@
-package model;
+package ua.edu.sumdu.j2se.vladislavY.tasks.model;
 
 import java.io.Serializable;
 import java.util.Iterator;

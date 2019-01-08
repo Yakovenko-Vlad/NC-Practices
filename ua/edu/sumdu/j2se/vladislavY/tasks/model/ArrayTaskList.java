@@ -1,23 +1,17 @@
-package model;
+package ua.edu.sumdu.j2se.vladislavY.tasks.model;
 
 import java.util.Iterator;
 
 /**
- * Tasks holder as a LinkedList
+ * Tasks holder as an ArrayList
  *
  * @author vladislav
  */
-public class LinkedTaskList extends TaskList {
-    private TaskNode head;
+public class ArrayTaskList extends TaskList {
+    private Task[] list;
 
-    private class TaskNode {
-        private Task task;
-        private TaskNode link;
-
-        TaskNode(Task task, TaskNode link) {
-            this.task = task;
-            this.link = link;
-        }
+    public ArrayTaskList() {
+        this.list = new Task[10];
     }
 
     /**
@@ -29,8 +23,12 @@ public class LinkedTaskList extends TaskList {
     public void add(Task task) throws Exception {
         if (task == null)
             throw new Exception("Task cannot be NULL");
-        head = new TaskNode(task, head);
-        counter++;
+        if (list.length == this.size()) {
+            Task[] listHelper = list;
+            list = new Task[(list.length * 3) / 2 + 1];
+            System.arraycopy(listHelper, 0, list, 0, listHelper.length);
+        }
+        list[counter++] = task;
     }
 
     /**
@@ -41,13 +39,12 @@ public class LinkedTaskList extends TaskList {
      */
     @Override
     public boolean remove(Task task) {
-        TaskNode helper = head;
-        TaskNode helperLink = head;
-        for (; helper != null; helperLink = helper, helper = helper.link) {
-            if (helper.task == task) {
-                helperLink.link = helper.link;
-                if (helper == head)
-                    head = helperLink.link;
+        for (int i = 0; i < this.size(); i++) {
+            if (list[i] == task) {
+                while (i < this.size() - 1) {
+                    list[i] = list[++i];
+                }
+                list[i] = null;
                 counter--;
                 return true;
             }
@@ -63,40 +60,28 @@ public class LinkedTaskList extends TaskList {
      */
     @Override
     public Task getTask(int index) {
-        TaskNode helper = head;
-        for (int i = 0; helper != null; i++, helper = helper.link) {
-            if (i == index) {
-                return helper.task;
-            }
-        }
-        return null;
+        return list[index];
     }
 
     @Override
     public Iterator<Task> iterator() {
         return new Iterator<Task>() {
-            private TaskNode helper =  new TaskNode(null, head);
-            private TaskNode helperLink = null;
+            private int current = -1;
 
             @Override
             public boolean hasNext() {
-                return helper.link != null;
+                return ArrayTaskList.this.size() - 1 > current;
             }
 
             @Override
             public Task next() {
-                if(hasNext()){
-                    helperLink = helper.link;
-                    helper = helper.link;
-                    return helperLink.task;
-                }
-                return null;
+                return hasNext() ? list[++current] : null;
             }
 
             @Override
             public void remove(){
-                if(helperLink != null)
-                    LinkedTaskList.this.remove(helper.task);
+                if(current >= 0)
+                    ArrayTaskList.this.remove(list[current--]);
                 else throw new IllegalStateException();
             }
         };
@@ -105,8 +90,8 @@ public class LinkedTaskList extends TaskList {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof LinkedTaskList)) return false;
-        Iterator<Task> iterator = ((LinkedTaskList) o).iterator();
+        if (!(o instanceof ArrayTaskList)) return false;
+        Iterator<Task> iterator = ((ArrayTaskList) o).iterator();
         Iterator<Task> iterator1 = this.iterator();
         while (iterator.hasNext() && iterator1.hasNext()){
             if(!iterator1.next().equals(iterator.next()))
@@ -117,7 +102,7 @@ public class LinkedTaskList extends TaskList {
 
     @Override
     public String toString() {
-        String str = "LinkedTaskList contains ";
+        String str = "ArrayTaskList contains ";
         Iterator<Task> iterator = this.iterator();
         while (iterator.hasNext()){
             str += iterator.next().toString() + "\n ";
@@ -126,16 +111,16 @@ public class LinkedTaskList extends TaskList {
     }
 
     @Override
-    protected LinkedTaskList clone() throws CloneNotSupportedException {
-        LinkedTaskList linkedTaskList = new LinkedTaskList();
+    protected ArrayTaskList clone() throws CloneNotSupportedException {
+        ArrayTaskList arrayTaskList = new ArrayTaskList();
         Iterator<Task> iterator = iterator();
         while (iterator.hasNext()) {
             try {
-                linkedTaskList.add(iterator.next());
+                arrayTaskList.add(iterator.next());
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-        return linkedTaskList;
+        return arrayTaskList;
     }
 }
