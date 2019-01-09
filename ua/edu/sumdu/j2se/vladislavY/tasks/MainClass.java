@@ -8,17 +8,20 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import ua.edu.sumdu.j2se.vladislavY.tasks.model.ArrayTaskList;
+import ua.edu.sumdu.j2se.vladislavY.tasks.model.Task;
 import ua.edu.sumdu.j2se.vladislavY.tasks.model.TaskIO;
 
 
 import java.io.File;
+import java.util.Date;
 
 public class MainClass extends Application {
     private static ArrayTaskList tasks = new ArrayTaskList();
     public static final File file = new File("tasks.txt");
 
-    public MainClass() {
+    public MainClass() throws Exception {
        this.loadSavedData();
+       tasks.add(new Task("test1 \"best\" test", new Date(new Date().getTime()-5000), new Date(new Date().getTime()+5000), 10));
     }
 
     @Override
