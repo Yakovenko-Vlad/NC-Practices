@@ -21,7 +21,7 @@ public class MainClass extends Application {
 
     public MainClass() throws Exception {
        this.loadSavedData();
-       tasks.add(new Task("test1 \"best\" test", new Date(new Date().getTime()-5000), new Date(new Date().getTime()+5000), 10));
+       //tasks.add(new Task("test1 \"best\" test", new Date(new Date().getTime()-5000), new Date(new Date().getTime()+5000), 100000));
     }
 
     @Override
@@ -46,8 +46,11 @@ public class MainClass extends Application {
     }
 
     public static ArrayTaskList getTasks() {
-
         return tasks;
+    }
+
+    public static void addTaskToList(Task task) throws Exception {
+        tasks.add(task);
     }
 
     public static void main(String[] args) {

@@ -8,18 +8,18 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="550.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ua.edu.sumdu.j2se.vladislavY.tasks.controller.TasksPageController">
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="631.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ua.edu.sumdu.j2se.vladislavY.tasks.controller.TasksPageController">
 
     <children>
 
-        <TableView fx:id="tasks" layoutX="275.0" layoutY="62.0" prefHeight="324.0" prefWidth="250.0">
+        <TableView fx:id="tasks" layoutX="275.0" layoutY="62.0" prefHeight="324.0" prefWidth="335.0">
             <columns>
                 <TableColumn fx:id="title" prefWidth="150.0" text="Title" />
-                <TableColumn fx:id="nextDate" prefWidth="100.0" text="Start" />
+                <TableColumn fx:id="nextDate" prefWidth="183.0" text="Next event time" />
             </columns>
         </TableView>
 
-        <Label layoutX="219.0" layoutY="14.0" text="Tasks list">
+        <Label layoutX="260.0" layoutY="14.0" text="Tasks list">
             <font>
                 <Font name="Verdana" size="24.0" />
             </font>
