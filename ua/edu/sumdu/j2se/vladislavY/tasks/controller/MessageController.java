@@ -6,11 +6,11 @@ import javafx.scene.control.ButtonType;
 
 public class MessageController {
 
-    public static boolean onCloseDialog() {
+    public static boolean onCloseDialog(String message) {
         ButtonType yes = new ButtonType("Yes", ButtonBar.ButtonData.OK_DONE);
         ButtonType no = new ButtonType("No", ButtonBar.ButtonData.CANCEL_CLOSE);
         Alert alert = new Alert(Alert.AlertType.WARNING,
-                "Are you sure you want to all changes?", yes, no);
+                message, yes, no);
         alert.setTitle("Warning");
         return  alert.showAndWait().orElse(no) == yes;
     }

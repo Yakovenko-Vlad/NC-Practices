@@ -61,7 +61,7 @@ public class AddNewTaskController {
     @FXML
     private void cancelButtonListener() {
         Stage stage = (Stage) cancelButton.getScene().getWindow();
-        if (MessageController.onCloseDialog()) stage.close();
+        if (MessageController.onCloseDialog("Are you sure you want to remove all changes?")) stage.close();
     }
 
     @FXML

@@ -88,7 +88,6 @@ public class TasksPageController {
         Stage stage = new Stage();
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.initStyle(StageStyle.UNDECORATED);
-        stage.setTitle("Add new Task");
         stage.setScene(new Scene(root));
         stage.show();
     }
@@ -111,6 +110,21 @@ public class TasksPageController {
             MessageController.warnDialog("Please, enter valid date");
             startDate.getEditor().clear();
             endDate.getEditor().clear();
+        }
+    }
+
+    @FXML
+    private void onCellClickLIstener() throws IOException {
+        Map.Entry<Date, Set<Task>> row = tasks.getSelectionModel().getSelectedItem();
+        if(row != null) {
+            MainClass.setTaskForEditiong(row.getValue().iterator().next());
+            Parent root = FXMLLoader.load(getClass().getResource("../view/overviewTaskView.fxml"));
+            Stage stage = new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.initStyle(StageStyle.UNDECORATED);
+            stage.setTitle("Add new Task");
+            stage.setScene(new Scene(root));
+            stage.show();
         }
     }
 }

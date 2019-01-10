@@ -12,7 +12,7 @@
 
     <children>
 
-        <TableView fx:id="tasks" layoutX="275.0" layoutY="62.0" prefHeight="324.0" prefWidth="335.0">
+        <TableView fx:id="tasks" layoutX="275.0" layoutY="62.0" onMouseClicked="#onCellClickLIstener" prefHeight="324.0" prefWidth="335.0">
             <columns>
                 <TableColumn fx:id="title" prefWidth="150.0" text="Title" />
                 <TableColumn fx:id="nextDate" prefWidth="183.0" text="Next event time" />

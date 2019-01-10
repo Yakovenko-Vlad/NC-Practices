@@ -17,6 +17,7 @@ import java.util.Date;
 
 public class MainClass extends Application {
     private static ArrayTaskList tasks = new ArrayTaskList();
+    private static Task taskForEditiong;
     public static final File file = new File("tasks.txt");
 
     public MainClass() throws Exception {
@@ -49,8 +50,20 @@ public class MainClass extends Application {
         return tasks;
     }
 
+    public static void setTasks(ArrayTaskList taskslist) {
+        tasks = taskslist;
+    }
+
     public static void addTaskToList(Task task) throws Exception {
         tasks.add(task);
+    }
+
+    public static void setTaskForEditiong(Task task) {
+        taskForEditiong = task;
+    }
+
+    public static Task getTaskForEditiong() {
+        return taskForEditiong;
     }
 
     public static void main(String[] args) {
