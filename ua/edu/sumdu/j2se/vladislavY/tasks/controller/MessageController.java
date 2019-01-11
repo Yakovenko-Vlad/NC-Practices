@@ -21,4 +21,11 @@ public class MessageController {
         alert.setHeaderText(message);
         alert.showAndWait();
     }
+
+    public static void notificationDialog(String tasksTitles) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Task reminder");
+        alert.setHeaderText(tasksTitles);
+        alert.showAndWait();
+    }
 }

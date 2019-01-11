@@ -1,28 +1,33 @@
 package ua.edu.sumdu.j2se.vladislavY.tasks;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import ua.edu.sumdu.j2se.vladislavY.tasks.controller.MessageController;
 import ua.edu.sumdu.j2se.vladislavY.tasks.model.ArrayTaskList;
 import ua.edu.sumdu.j2se.vladislavY.tasks.model.Task;
 import ua.edu.sumdu.j2se.vladislavY.tasks.model.TaskIO;
-
+import ua.edu.sumdu.j2se.vladislavY.tasks.model.Tasks;
 
 import java.io.File;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class MainClass extends Application {
     private static ArrayTaskList tasks = new ArrayTaskList();
-    private static Task taskForEditiong;
+    private static Task taskForEditing;
     public static final File file = new File("tasks.txt");
 
     public MainClass() throws Exception {
-       this.loadSavedData();
-       //tasks.add(new Task("test1 \"best\" test", new Date(new Date().getTime()-5000), new Date(new Date().getTime()+5000), 100000));
+        this.loadSavedData();
     }
 
     @Override
@@ -32,6 +37,7 @@ public class MainClass extends Application {
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
         onCloseListener(primaryStage);
+        notifyAboutEvent();
     }
 
     private void loadSavedData() {
@@ -59,14 +65,44 @@ public class MainClass extends Application {
     }
 
     public static void setTaskForEditiong(Task task) {
-        taskForEditiong = task;
+        taskForEditing = task;
     }
 
     public static Task getTaskForEditiong() {
-        return taskForEditiong;
+        return taskForEditing;
     }
 
     public static void main(String[] args) {
         launch(args);
+    }
+
+    private void notifyAboutEvent() {
+        ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(1);
+        scheduledExecutorService.scheduleWithFixedDelay(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        Platform.runLater(new Runnable() {
+                            @Override
+                            public void run() {
+                                Calendar cal = Calendar.getInstance();
+                                cal.add(Calendar.MINUTE, 1);
+                                try {
+                                    ArrayTaskList listForMinute = (ArrayTaskList) Tasks.incoming(MainClass.tasks, new Date(), cal.getTime());
+                                    if (listForMinute.size() > 0) {
+                                        String str = "";
+                                        for (Task task : listForMinute) {
+                                            str += task.getTitle() + "\n";
+                                        }
+                                        MessageController.notificationDialog(str);
+                                    }
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+                    }
+                }, 0, 1, TimeUnit.MINUTES
+        );
     }
 }

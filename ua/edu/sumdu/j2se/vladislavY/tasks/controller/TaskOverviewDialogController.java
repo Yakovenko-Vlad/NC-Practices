@@ -96,4 +96,9 @@ public class TaskOverviewDialogController {
         Stage stage = (Stage) cancelBtn.getScene().getWindow();
         if (MessageController.onCloseDialog("Are you sure you want to remove all changes?")) stage.close();
     }
+
+    @FXML
+    private void saveBtnHandler() {
+
+    }
 }

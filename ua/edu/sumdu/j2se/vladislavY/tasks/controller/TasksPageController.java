@@ -15,6 +15,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.stage.WindowEvent;
 import javafx.util.Callback;
 import ua.edu.sumdu.j2se.vladislavY.tasks.MainClass;
 import ua.edu.sumdu.j2se.vladislavY.tasks.model.Task;
@@ -22,6 +23,7 @@ import ua.edu.sumdu.j2se.vladislavY.tasks.model.Tasks;
 
 import java.io.IOException;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.*;
 
@@ -79,6 +81,9 @@ public class TasksPageController {
         } catch (NullPointerException e) {
             System.out.println("The list of the tasks for selected period is empty");
         }
+
+        disablePastDatesInDatepicker(startDate);
+        disablePastDatesInDatepicker(endDate);
     }
 
     @FXML
@@ -90,6 +95,27 @@ public class TasksPageController {
         stage.initStyle(StageStyle.UNDECORATED);
         stage.setScene(new Scene(root));
         stage.show();
+        System.out.println("Test2");
+        stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent event) {
+                /*try {
+                    Calendar cal = Calendar.getInstance();
+                    cal.add(Calendar.DAY_OF_MONTH, 1);
+                    System.out.println("Arr size - " + MainClass.getTasks().size());
+                    calendar = Tasks.calendar(MainClass.getTasks(), new Date(), cal.getTime());
+                    usersData = FXCollections.observableArrayList(calendar.entrySet());
+                    tasks.setItems(usersData);
+                    tasks.getColumns().setAll(title, nextDate);
+                } catch (NullPointerException e) {
+                    System.out.println("The list of the tasks for selected period is empty");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }*/
+                System.out.println("Close add dialog");
+            }
+        });
+        System.out.println("Test1");
     }
 
     @FXML
@@ -100,11 +126,17 @@ public class TasksPageController {
             Instant endInstant = Instant.from(endDate.getValue().atStartOfDay(ZoneId.systemDefault()));
             calendar = Tasks.calendar(MainClass.getTasks(), Date.from(startInstant), Date.from(endInstant));
             try {
+                Calendar cal = Calendar.getInstance();
+                cal.add(Calendar.DAY_OF_MONTH, 1);
+                System.out.println("Arr size - " + MainClass.getTasks().size());
+                calendar = Tasks.calendar(MainClass.getTasks(), new Date(), cal.getTime());
                 usersData = FXCollections.observableArrayList(calendar.entrySet());
                 tasks.setItems(usersData);
                 tasks.getColumns().setAll(title, nextDate);
             } catch (NullPointerException e) {
                 System.out.println("The list of the tasks for selected period is empty");
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         } catch (NullPointerException e) {
             MessageController.warnDialog("Please, enter valid date");
@@ -125,6 +157,22 @@ public class TasksPageController {
             stage.setTitle("Add new Task");
             stage.setScene(new Scene(root));
             stage.show();
+            stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+                @Override
+                public void handle(WindowEvent event) {
+                    System.out.println("test");
+                }
+            });
         }
+    }
+
+    private void disablePastDatesInDatepicker(DatePicker datePicker) {
+        datePicker.setDayCellFactory(picker -> new DateCell() {
+            public void updateItem(LocalDate date, boolean empty) {
+                super.updateItem(date, empty);
+                LocalDate today = LocalDate.now();
+                setDisable(empty || date.compareTo(today) < 0 );
+            }
+        });
     }
 }

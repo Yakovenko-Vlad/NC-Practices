@@ -1,10 +1,7 @@
 package ua.edu.sumdu.j2se.vladislavY.tasks.controller;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 import ua.edu.sumdu.j2se.vladislavY.tasks.MainClass;
 import ua.edu.sumdu.j2se.vladislavY.tasks.model.Task;
@@ -42,6 +39,13 @@ public class AddNewTaskController {
 
     @FXML
     private CheckBox isRepeated;
+
+    @FXML
+    private void initialize() {
+        disablePastDatesInDatepicker(time);
+        disablePastDatesInDatepicker(startDate);
+        disablePastDatesInDatepicker(endDate);
+    }
 
     @FXML
     private void repeatChBoxHandler() {
@@ -89,5 +93,15 @@ public class AddNewTaskController {
 
         }
 
+    }
+
+    private void disablePastDatesInDatepicker(DatePicker datePicker) {
+        datePicker.setDayCellFactory(picker -> new DateCell() {
+            public void updateItem(LocalDate date, boolean empty) {
+                super.updateItem(date, empty);
+                LocalDate today = LocalDate.now();
+                setDisable(empty || date.compareTo(today) < 0 );
+            }
+        });
     }
 }
