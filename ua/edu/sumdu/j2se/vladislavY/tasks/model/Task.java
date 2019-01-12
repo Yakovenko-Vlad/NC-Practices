@@ -98,15 +98,13 @@ public class Task implements Cloneable, Serializable {
      * `null` if the next time will be after the end of the task
      */
     public Date nextTimeAfter(Date current) {
-        if (isActive()) {
-            if (isRepeated()) {
-                Date nextTime = new Date(((current.getTime() - start.getTime()) / interval)
-                        * interval + interval + start.getTime());
-                return current.before(start) ? start : (nextTime.after(end) ? null : nextTime);
-            } else {
-                return time.after(current) ? time : null;
-            }
-        } else return null;
+        if (isRepeated()) {
+            Date nextTime = new Date(((current.getTime() - start.getTime()) / interval)
+                    * interval + interval + start.getTime());
+            return current.before(start) ? start : (nextTime.after(end) ? null : nextTime);
+        } else {
+            return time.after(current) ? time : null;
+        }
     }
 
     @Override
@@ -125,7 +123,7 @@ public class Task implements Cloneable, Serializable {
         int hash = 23;
         hash += hash * interval;
         hash += hash * title.length();
-        if (time != null)  hash += hash * time.getTime();
+        if (time != null) hash += hash * time.getTime();
         return hash;
     }
 

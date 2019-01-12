@@ -5,6 +5,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import org.apache.log4j.Logger;
 import ua.edu.sumdu.j2se.vladislavY.tasks.MainClass;
 import ua.edu.sumdu.j2se.vladislavY.tasks.model.ArrayTaskList;
 import ua.edu.sumdu.j2se.vladislavY.tasks.model.Task;
@@ -47,6 +48,7 @@ public class TaskOverviewDialogController {
     @FXML
     private CheckBox isActive;
 
+    private static final Logger log = Logger.getLogger(TaskOverviewDialogController.class);
     String datePattern = "yyyy-MM-dd HH:mm:ss";
 
     public TaskOverviewDialogController() {
@@ -70,6 +72,7 @@ public class TaskOverviewDialogController {
         for (int i = 0; i < tasks.size(); i++) {
             if (tasks.getTask(i).equals(task)) {
                 index = i;
+                log.info("Tasks index for editing - " + index);
                 return;
             }
         }
@@ -77,6 +80,7 @@ public class TaskOverviewDialogController {
 
     @FXML
     private void editBtnHandler() {
+        log.info("Edit btn click");
         title.setDisable(false);
         time.setDisable(false);
         startDate.setDisable(false);
@@ -130,6 +134,7 @@ public class TaskOverviewDialogController {
             MessageController.warnDialog("Enter Interval");
             return null;
         } else if (!intervalText.matches("[0-9]*")) {
+            log.warn("Interval: " + intervalText);
             MessageController.warnDialog("Use only digits");
             interval.setText("");
             return null;
@@ -145,6 +150,8 @@ public class TaskOverviewDialogController {
             time.setText("");
             startDate.setText("");
             endDate.setText("");
+            log.warn("Start: " + startDate.getText() + ", End: " + endDate.getText() +
+                    ", Time: " + time.getText() + ". Interval - " + intervalD);
             MessageController.warnDialog("Enter valid date by pattern \'" + datePattern + "\'");
             return null;
         }

@@ -21,12 +21,17 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
+
 public class MainClass extends Application {
     private static ArrayTaskList tasks = new ArrayTaskList();
     private static Task taskForEditing;
     public static final File file = new File("tasks.txt");
+    private static final Logger log = Logger.getLogger(MainClass.class);
 
     public MainClass() throws Exception {
+        PropertyConfigurator.configure("resources/log4j.properties");
         this.loadSavedData();
     }
 
@@ -88,10 +93,12 @@ public class MainClass extends Application {
                                 Calendar cal = Calendar.getInstance();
                                 cal.add(Calendar.MINUTE, 1);
                                 try {
-                                    ArrayTaskList listForMinute = (ArrayTaskList) Tasks.incoming(MainClass.tasks, new Date(), cal.getTime());
+                                    ArrayTaskList listForMinute = (ArrayTaskList) Tasks.incoming(MainClass.tasks, new Date(), cal.getTime(), true);
                                     if (listForMinute.size() > 0) {
                                         String str = "";
                                         for (Task task : listForMinute) {
+                                            log.info("Title: " + task.getTitle() + ", current date: " + new Date() +
+                                                    "nextTimeAfter current" + task.nextTimeAfter(new Date()));
                                             str += task.getTitle() + "\n";
                                         }
                                         MessageController.notificationDialog(str);

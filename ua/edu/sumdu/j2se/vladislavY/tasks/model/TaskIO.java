@@ -139,12 +139,11 @@ public class TaskIO {
             BufferedReader reader = new BufferedReader(in);
             String line;
             while ((line = reader.readLine()) != null) {
-                if (line.contains("at")){
+                if (line.contains("at")) {
                     Task task = new Task(parseTitle(line), parseDate(line)[0]);
                     task.setActive(checkActive(line));
                     tasks.add(task);
-                }
-                else {
+                } else {
                     Task task = new Task(parseTitle(line), parseDate(line)[0], parseDate(line)[1], parseInterval(line));
                     task.setActive(checkActive(line));
                     tasks.add(task);
@@ -163,10 +162,20 @@ public class TaskIO {
 
     public static int parseInterval(String line) {
         String[] numbers = line.substring(line.lastIndexOf("[") + 1, line.lastIndexOf("]")).split(" ");
-        int interval  = 0;
-        if(numbers.length > 1) interval += Integer.parseInt(numbers[0]) * 3600;
-        if(numbers.length > 3) interval += Integer.parseInt(numbers[2]) * 60;
-        if(numbers.length > 5) interval += Integer.parseInt(numbers[4]);
+        int interval = 0;
+        if (numbers.length > 1) {
+            if (numbers[1].contains("hour"))
+                interval += Integer.parseInt(numbers[0]) * 3600;
+            else if (numbers[1].contains("minute"))
+                interval += Integer.parseInt(numbers[0]) * 60;
+            else interval += Integer.parseInt(numbers[0]);
+        }
+        if (numbers.length > 3) {
+            if (numbers[1].contains("minute"))
+                interval += Integer.parseInt(numbers[2]) * 60;
+            else interval += Integer.parseInt(numbers[2]);
+        }
+        if (numbers.length > 5) interval += Integer.parseInt(numbers[4]);
         return interval;
     }
 

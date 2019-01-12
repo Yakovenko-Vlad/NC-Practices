@@ -12,14 +12,15 @@ public class Tasks {
      * @param to    end of the period
      * @return array of the tasks which will be fulfilled in current period
      */
-    public static Iterable<Task> incoming(Iterable<Task> tasks, Date from, Date to) throws Exception {
+    public static Iterable<Task> incoming(Iterable<Task> tasks, Date from, Date to, boolean isActive) throws Exception {
         ArrayTaskList incomingList = new ArrayTaskList();
         for (Task task : tasks)
-            try {
-                if (task.nextTimeAfter(from).before(to) || task.nextTimeAfter(from).equals(to))
-                    incomingList.add(task);
-            } catch (NullPointerException e) {
-            }
+            if (!isActive | task.isActive())
+                try {
+                    if (task.nextTimeAfter(from).before(to) || task.nextTimeAfter(from).equals(to))
+                        incomingList.add(task);
+                } catch (NullPointerException e) {
+                }
         return incomingList;
     }
 
@@ -33,7 +34,7 @@ public class Tasks {
      */
     public static SortedMap<Date, Set<Task>> calendar(Iterable<Task> tasks, Date start, Date end) throws Exception {
         TreeMap<Date, Set<Task>> calendar = new TreeMap<Date, Set<Task>>();
-        for (Task task : Tasks.incoming(tasks, start, end))
+        for (Task task : Tasks.incoming(tasks, start, end, false))
             for (Date date : Tasks.events(task, start, end))
                 if (!calendar.keySet().contains(date)) {
                     Set<Task> tasksSet = new HashSet<>();
@@ -50,15 +51,18 @@ public class Tasks {
     /**
      * Generates array of event dates, which will be performed in the current period
      *
-     * @param task current task
+     * @param task  current task
      * @param start start of the period
      * @param end   end of the period
      * @return event dates
      */
-    public static ArrayList<Date> events(Task task, Date start, Date end){
+    public static ArrayList<Date> events(Task task, Date start, Date end) {
         ArrayList<Date> dates = new ArrayList<>();
-        for (Date i = task.nextTimeAfter(start); !end.before(i); i = task.nextTimeAfter(i))
-            dates.add(i);
+        try {
+            for (Date i = task.nextTimeAfter(start); !end.before(i); i = task.nextTimeAfter(i))
+                dates.add(i);
+        } catch (NullPointerException e) {
+        }
         return dates;
     }
 }
