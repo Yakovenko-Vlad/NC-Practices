@@ -10,8 +10,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.TextFieldTableCell;
-import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -84,6 +82,8 @@ public class TasksPageController {
 
         disablePastDatesInDatepicker(startDate);
         disablePastDatesInDatepicker(endDate);
+        startDate.getEditor().setDisable(true);
+        endDate.getEditor().setDisable(true);
     }
 
     @FXML
@@ -126,10 +126,6 @@ public class TasksPageController {
             Instant endInstant = Instant.from(endDate.getValue().atStartOfDay(ZoneId.systemDefault()));
             calendar = Tasks.calendar(MainClass.getTasks(), Date.from(startInstant), Date.from(endInstant));
             try {
-                Calendar cal = Calendar.getInstance();
-                cal.add(Calendar.DAY_OF_MONTH, 1);
-                System.out.println("Arr size - " + MainClass.getTasks().size());
-                calendar = Tasks.calendar(MainClass.getTasks(), new Date(), cal.getTime());
                 usersData = FXCollections.observableArrayList(calendar.entrySet());
                 tasks.setItems(usersData);
                 tasks.getColumns().setAll(title, nextDate);
@@ -140,8 +136,6 @@ public class TasksPageController {
             }
         } catch (NullPointerException e) {
             MessageController.warnDialog("Please, enter valid date");
-            startDate.getEditor().clear();
-            endDate.getEditor().clear();
         }
     }
 

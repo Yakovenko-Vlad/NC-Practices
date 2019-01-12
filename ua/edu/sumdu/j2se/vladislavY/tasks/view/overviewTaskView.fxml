@@ -16,7 +16,7 @@
       <TextField fx:id="title" disable="true" layoutX="302.0" layoutY="87.0" />
       <Button fx:id="removeBtn" layoutX="422.0" layoutY="340.0" mnemonicParsing="false" onAction="#removeBtnHandler" text="Remove" />
       <Button fx:id="editBtn" layoutX="24.0" layoutY="62.0" mnemonicParsing="false" onAction="#editBtnHandler" text="Edit" />
-      <Button fx:id="saveBtn" layoutX="68.0" layoutY="62.0" mnemonicParsing="false" text="Save" visible="false" />
+      <Button fx:id="saveBtn" layoutX="68.0" layoutY="62.0" mnemonicParsing="false" onAction="#saveBtnHandler" text="Save" visible="false" />
       <Button fx:id="cancelBtn" layoutX="507.0" layoutY="340.0" mnemonicParsing="false" onAction="#cancelBtnHandler" text="Cancel" />
       <TextField fx:id="endDate" disable="true" layoutX="302.0" layoutY="214.0" />
       <TextField fx:id="time" disable="true" layoutX="302.0" layoutY="129.0" />

@@ -9,6 +9,12 @@ import ua.edu.sumdu.j2se.vladislavY.tasks.MainClass;
 import ua.edu.sumdu.j2se.vladislavY.tasks.model.ArrayTaskList;
 import ua.edu.sumdu.j2se.vladislavY.tasks.model.Task;
 
+import java.text.DateFormat;
+import java.text.Format;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class TaskOverviewDialogController {
     private ArrayTaskList tasks;
     private Task task;
@@ -19,9 +25,6 @@ public class TaskOverviewDialogController {
 
     @FXML
     private Button cancelBtn;
-
-    @FXML
-    private Button editBtn;
 
     @FXML
     private Button removeBtn;
@@ -44,6 +47,7 @@ public class TaskOverviewDialogController {
     @FXML
     private CheckBox isActive;
 
+    String datePattern = "yyyy-MM-dd HH:mm:ss";
 
     public TaskOverviewDialogController() {
         this.tasks = MainClass.getTasks();
@@ -53,10 +57,11 @@ public class TaskOverviewDialogController {
 
     @FXML
     private void initialize() {
+        Format formatter = new SimpleDateFormat(datePattern);
         title.setText(task.getTitle());
-        time.setText(task.getTime().toString());
-        startDate.setText(task.getStartTime().toString());
-        endDate.setText(task.getEndTime().toString());
+        time.setText(formatter.format(task.getTime()));
+        startDate.setText(formatter.format(task.getStartTime()));
+        endDate.setText(formatter.format(task.getEndTime()));
         interval.setText(String.valueOf(task.getRepeatInterval()));
         isActive.setSelected(task.isActive());
     }
@@ -98,7 +103,54 @@ public class TaskOverviewDialogController {
     }
 
     @FXML
-    private void saveBtnHandler() {
+    private void saveBtnHandler() throws Exception {
+        Task t = validateData();
+        if (t != null) {
+            t.setActive(isActive.isSelected());
+            tasks.remove(task);
+            tasks.add(t);
+            MainClass.setTasks(tasks);
+            Stage stage = (Stage) saveBtn.getScene().getWindow();
+            stage.close();
+        }
+    }
 
+    private Task validateData() throws Exception {
+        Date timeDate;
+        Date sDate;
+        Date eDate;
+        int intervalD;
+        String titleText = title.getText();
+        if (titleText.isEmpty()) {
+            MessageController.warnDialog("Enter tasks title");
+            return null;
+        }
+        String intervalText = interval.getText();
+        if (intervalText.isEmpty()) {
+            MessageController.warnDialog("Enter Interval");
+            return null;
+        } else if (!intervalText.matches("[0-9]*")) {
+            MessageController.warnDialog("Use only digits");
+            interval.setText("");
+            return null;
+        } else {
+            intervalD = Integer.parseInt(intervalText);
+        }
+        DateFormat format = new SimpleDateFormat(datePattern);
+        try {
+            timeDate = format.parse(time.getText());
+            sDate = format.parse(startDate.getText());
+            eDate = format.parse(endDate.getText());
+        } catch (ParseException e) {
+            time.setText("");
+            startDate.setText("");
+            endDate.setText("");
+            MessageController.warnDialog("Enter valid date by pattern \'" + datePattern + "\'");
+            return null;
+        }
+        if (intervalD == 0)
+            return new Task(titleText, timeDate);
+        else
+            return new Task(titleText, sDate, eDate, intervalD / 1000);
     }
 }
