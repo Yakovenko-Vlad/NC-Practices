@@ -55,9 +55,11 @@ public class TasksPageController {
 
     @FXML
     private void initialize() {
+        // title cell filling
         title.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Map.Entry<Date, Set<Task>>, String>, ObservableValue<String>>() {
             @Override
             public ObservableValue<String> call(TableColumn.CellDataFeatures<Map.Entry<Date, Set<Task>>, String> param) {
+                // if task inActive - "inActive" word is added -> ability to work with inActive tasks (like in Outlook)
                 String titles = "";
                 for (Task task : param.getValue().getValue()) {
                     titles += task.isActive() ? task.getTitle() + "\n" : task.getTitle() + " inActive\n";
@@ -66,7 +68,7 @@ public class TasksPageController {
             }
         });
 
-
+        // calendar field
         nextDate.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Map.Entry<Date, Set<Task>>, String>, ObservableValue<String>>() {
             @Override
             public ObservableValue<String> call(TableColumn.CellDataFeatures<Map.Entry<Date, Set<Task>>, String> param) {
@@ -78,7 +80,7 @@ public class TasksPageController {
             usersData = FXCollections.observableArrayList(calendar.entrySet());
             tasks.setItems(usersData);
             tasks.getColumns().setAll(title, nextDate);
-        } catch (NullPointerException e) {
+        } catch (NullPointerException e) { // if calendar is empty
             log.warn("Calendar for current period (" + new Date() + ", +1) is empty");
         }
 
@@ -99,7 +101,7 @@ public class TasksPageController {
         stage.show();
         stage.setOnHidden(new EventHandler<WindowEvent>() {
             @Override
-            public void handle(WindowEvent event) {
+            public void handle(WindowEvent event) {// refresh tableView on main page after "add task" dialog is closed
                 try {
                     Calendar cal = Calendar.getInstance();
                     cal.add(Calendar.DAY_OF_MONTH, 1);
@@ -143,7 +145,7 @@ public class TasksPageController {
         log.info("Cell click handler");
         Map.Entry<Date, Set<Task>> row = tasks.getSelectionModel().getSelectedItem();
         if (row != null) {
-            MainClass.setTaskForEditiong(row.getValue().iterator().next());
+            MainClass.setTaskForEditing(row.getValue().iterator().next());
             Parent root = FXMLLoader.load(getClass().getResource("ua/edu/sumdu/j2se/vladislavY/tasks/view/overviewTaskView.fxml"));
             Stage stage = new Stage();
             stage.initModality(Modality.APPLICATION_MODAL);
@@ -151,7 +153,7 @@ public class TasksPageController {
             stage.setTitle("Add new Task");
             stage.setScene(new Scene(root));
             stage.show();
-            stage.setOnHidden(new EventHandler<WindowEvent>() {
+            stage.setOnHidden(new EventHandler<WindowEvent>() {// refresh tableView on main page after "task overview" dialog is closed
                 @Override
                 public void handle(WindowEvent event) {
                     try {
@@ -172,6 +174,12 @@ public class TasksPageController {
         }
     }
 
+    /**
+     * Disable earliest dated in datePicker.
+     * Unable to create task for previous day
+     *
+     * @param datePicker
+     */
     private void disablePastDatesInDatepicker(DatePicker datePicker) {
         datePicker.setDayCellFactory(picker -> new DateCell() {
             public void updateItem(LocalDate date, boolean empty) {

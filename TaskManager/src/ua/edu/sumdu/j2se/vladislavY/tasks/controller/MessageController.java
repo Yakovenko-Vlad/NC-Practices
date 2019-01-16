@@ -5,9 +5,18 @@ import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import org.apache.log4j.Logger;
 
+/**
+ * Message controller. Contains functionality of all available messages
+ */
 public class MessageController {
     private static final Logger log = Logger.getLogger(MessageController.class);
 
+    /**
+     * Warning dialog with ability to select "yes" or "no"
+     *
+     * @param message question
+     * @return is "yes" selected
+     */
     public static boolean onCloseDialog(String message) {
         ButtonType yes = new ButtonType("Yes", ButtonBar.ButtonData.OK_DONE);
         ButtonType no = new ButtonType("No", ButtonBar.ButtonData.CANCEL_CLOSE);
@@ -18,6 +27,11 @@ public class MessageController {
         return alert.showAndWait().orElse(no) == yes;
     }
 
+    /**
+     * Simple warning dialog
+     *
+     * @param message
+     */
     public static void warnDialog(String message) {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle("Warning Dialog");
@@ -26,6 +40,11 @@ public class MessageController {
         alert.showAndWait();
     }
 
+    /**
+     * Dialog for time reminder notifications
+     *
+     * @param tasksTitles
+     */
     public static void notificationDialog(String tasksTitles) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Task reminder");

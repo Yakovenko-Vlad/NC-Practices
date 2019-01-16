@@ -49,11 +49,11 @@ public class TaskOverviewDialogController {
     private CheckBox isActive;
 
     private static final Logger log = Logger.getLogger(TaskOverviewDialogController.class);
-    String datePattern = "yyyy-MM-dd HH:mm:ss";
+    String datePattern = "yyyy-MM-dd HH:mm:ss"; // pattern for date convertor
 
     public TaskOverviewDialogController() {
         this.tasks = MainClass.getTasks();
-        this.task = MainClass.getTaskForEditiong();
+        this.task = MainClass.getTaskForEditing();
         getTaskIndex();
     }
 
@@ -68,6 +68,9 @@ public class TaskOverviewDialogController {
         isActive.setSelected(task.isActive());
     }
 
+    /**
+     * Define task index in main tasks array
+     */
     private void getTaskIndex() {
         for (int i = 0; i < tasks.size(); i++) {
             if (tasks.getTask(i).equals(task)) {
@@ -119,6 +122,12 @@ public class TaskOverviewDialogController {
         }
     }
 
+    /**
+     * Validate all entered data (new task fields) after "add task" button pressing
+     *
+     * @return new task if there is no any validate problems otherwise null
+     * @throws Exception
+     */
     private Task validateData() throws Exception {
         Date timeDate;
         Date sDate;
@@ -130,10 +139,10 @@ public class TaskOverviewDialogController {
             return null;
         }
         String intervalText = interval.getText();
-        if (intervalText.isEmpty()) {
+        if (intervalText.isEmpty()) {//validate interval field (is empty)
             MessageController.warnDialog("Enter Interval");
             return null;
-        } else if (!intervalText.matches("[0-9]*")) {
+        } else if (!intervalText.matches("[0-9]*")) {// verify is entered characters are digits
             log.warn("Interval: " + intervalText);
             MessageController.warnDialog("Use only digits");
             interval.setText("");
@@ -142,11 +151,11 @@ public class TaskOverviewDialogController {
             intervalD = Integer.parseInt(intervalText);
         }
         DateFormat format = new SimpleDateFormat(datePattern);
-        try {
+        try {// get data from time/date fields - get exception if text is not valid
             timeDate = format.parse(time.getText());
             sDate = format.parse(startDate.getText());
             eDate = format.parse(endDate.getText());
-        } catch (ParseException e) {
+        } catch (ParseException e) { //clear all time fields
             time.setText("");
             startDate.setText("");
             endDate.setText("");

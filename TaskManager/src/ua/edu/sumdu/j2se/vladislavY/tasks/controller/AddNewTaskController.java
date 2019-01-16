@@ -12,7 +12,9 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
 
-
+/**
+ * Controller for "Add task" dialog
+ */
 public class AddNewTaskController {
     @FXML
     private Button addButton;
@@ -55,7 +57,7 @@ public class AddNewTaskController {
 
     @FXML
     private void repeatChBoxHandler() {
-        if (!isRepeated.isSelected()) {
+        if (!isRepeated.isSelected()) { // enable/disable fields for repeated/not repeated tasks
             log.info("Repeated task view selected");
             startDate.setDisable(true);
             endDate.setDisable(true);
@@ -79,7 +81,7 @@ public class AddNewTaskController {
     @FXML
     private void addButtonListener() throws Exception {
         Task t = validateData();
-        if (t != null) {
+        if (t != null) { // if entered data is valid
             t.setActive(isActive.isSelected());
             MainClass.addTaskToList(t);
             Stage stage = (Stage) addButton.getScene().getWindow();
@@ -87,21 +89,27 @@ public class AddNewTaskController {
         }
     }
 
+    /**
+     * Validate all entered data (new task fields) after "add task" button pressing
+     *
+     * @return new task if there is no any validate problems otherwise null
+     * @throws Exception
+     */
     private Task validateData() throws Exception {
         String titleText = title.getText();
-        if (titleText.isEmpty()) {
+        if (titleText.isEmpty()) { // title field is empty
             MessageController.warnDialog("Enter task title");
             return null;
         }
         try {
-            if (isRepeated.isSelected()) {
+            if (isRepeated.isSelected()) {// repeated task type
                 Instant instantStart = Instant.from(startDate.getValue().atStartOfDay(ZoneId.systemDefault()));
                 Instant instantEnd = Instant.from(endDate.getValue().atStartOfDay(ZoneId.systemDefault()));
                 String intervalText = interval.getText();
-                if (intervalText.isEmpty()) {
+                if (intervalText.isEmpty()) { //validate interval field (is empty)
                     MessageController.warnDialog("Enter Interval");
                     return null;
-                } else if (!intervalText.matches("[0-9]*")) {
+                } else if (!intervalText.matches("[0-9]*")) { // verify is entered characters are digits
                     log.warn("Interval:" + intervalText);
                     MessageController.warnDialog("Use only digits");
                     interval.setText("");
@@ -121,6 +129,12 @@ public class AddNewTaskController {
         }
     }
 
+    /**
+     * Disable earliest dated in datePicker.
+     * Unable to create task for previous day
+     *
+     * @param datePicker
+     */
     private void disablePastDatesInDatepicker(DatePicker datePicker) {
         datePicker.setDayCellFactory(picker -> new DateCell() {
             public void updateItem(LocalDate date, boolean empty) {

@@ -45,10 +45,18 @@ public class MainClass extends Application {
         notifyAboutEvent();
     }
 
+    /**
+     * Read tasks from file on app start
+     */
     private void loadSavedData() {
         TaskIO.readText(tasks, file);
     }
 
+    /**
+     * Write all tasks to file on close
+     *
+     * @param stage
+     */
     private void onCloseListener(Stage stage) {
         stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
             public void handle(WindowEvent we) {
@@ -57,23 +65,49 @@ public class MainClass extends Application {
         });
     }
 
+    /**
+     * Returns all tasks
+     *
+     * @return tasks array
+     */
     public static ArrayTaskList getTasks() {
         return tasks;
     }
 
+    /**
+     * Replace main tasks array with new (changed) tasks array
+     *
+     * @param taskslist
+     */
     public static void setTasks(ArrayTaskList taskslist) {
         tasks = taskslist;
     }
 
+    /**
+     * Add task to main array
+     *
+     * @param task
+     * @throws Exception
+     */
     public static void addTaskToList(Task task) throws Exception {
         tasks.add(task);
     }
 
-    public static void setTaskForEditiong(Task task) {
+    /**
+     * Remember task for overview controller
+     *
+     * @param task
+     */
+    public static void setTaskForEditing(Task task) {
         taskForEditing = task;
     }
 
-    public static Task getTaskForEditiong() {
+    /**
+     * Returns task for overview controller
+     *
+     * @return
+     */
+    public static Task getTaskForEditing() {
         return taskForEditing;
     }
 
@@ -81,6 +115,10 @@ public class MainClass extends Application {
         launch(args);
     }
 
+    /**
+     * Notify user about event in calendar.
+     * Runs each minute and go through main tasks array. Get all tasks which will happened in next minute.
+     */
     private void notifyAboutEvent() {
         ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(1);
         scheduledExecutorService.scheduleWithFixedDelay(
@@ -96,7 +134,7 @@ public class MainClass extends Application {
                                     ArrayTaskList listForMinute = (ArrayTaskList) Tasks.incoming(MainClass.tasks, new Date(), cal.getTime(), true);
                                     if (listForMinute.size() > 0) {
                                         String str = "";
-                                        for (Task task : listForMinute) {
+                                        for (Task task : listForMinute) { // all tasks titles to notify in one string 
                                             log.info("Title: " + task.getTitle() + ", current date: " + new Date() +
                                                     "nextTimeAfter current" + task.nextTimeAfter(new Date()));
                                             str += task.getTitle() + "\n";
