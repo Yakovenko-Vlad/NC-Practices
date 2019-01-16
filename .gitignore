@@ -5,3 +5,4 @@ tasks.txt
 build/ua/edu/sumdu/j2se/vladislavY/tasks/view/tasksListView.fxml
 build*
 log.log
+*/target/*
