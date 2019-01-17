@@ -31,13 +31,13 @@ public class MainClass extends Application {
     private static final Logger log = Logger.getLogger(MainClass.class);
 
     public MainClass() throws Exception {
-        PropertyConfigurator.configure("src/resources/log4j.properties");
+        //PropertyConfigurator.configure("src/resources/log4j.properties");
         this.loadSavedData();
     }
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("ua/edu/sumdu/j2se/vladislavY/tasks/view/tasksListView.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("view/tasksListView.fxml"));
         primaryStage.setTitle("Task Manager");
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
@@ -134,7 +134,7 @@ public class MainClass extends Application {
                                     ArrayTaskList listForMinute = (ArrayTaskList) Tasks.incoming(MainClass.tasks, new Date(), cal.getTime(), true);
                                     if (listForMinute.size() > 0) {
                                         String str = "";
-                                        for (Task task : listForMinute) { // all tasks titles to notify in one string 
+                                        for (Task task : listForMinute) { // all tasks titles to notify in one string
                                             log.info("Title: " + task.getTitle() + ", current date: " + new Date() +
                                                     "nextTimeAfter current" + task.nextTimeAfter(new Date()));
                                             str += task.getTitle() + "\n";
