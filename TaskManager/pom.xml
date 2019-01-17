@@ -9,7 +9,7 @@
     <version>1.0-SNAPSHOT</version>
     <properties>
         <maven.compiler.source>10</maven.compiler.source>
-        <maven.compiler.target>1.10</maven.compiler.target>
+        <maven.compiler.target>10</maven.compiler.target>
     </properties>
     <dependencies>
         <dependency>
@@ -37,11 +37,19 @@
                 </includes>
             </resource>
             <resource>
-                <directory>src/resources</directory>
+                <directory>src/ua/edu/sumdu/j2se/vladislavY/tasks/view</directory>
+                <targetPath>ua/edu/sumdu/j2se/vladislavY/tasks/controller</targetPath>
                 <filtering>true</filtering>
-                <excludes>
-                    <exclude>*</exclude>
-                </excludes>
+                <includes>
+                    <include>*.fxml</include>
+                </includes>
+            </resource>
+
+            <resource>
+                <directory>src/resources</directory>
+                <includes>
+                    <include>log4j.properties</include>
+                </includes>
             </resource>
         </resources>
         <plugins>
