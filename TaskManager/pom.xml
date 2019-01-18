@@ -36,14 +36,14 @@
                     <include>*</include>
                 </includes>
             </resource>
-            <resource>
+            <!--<resource>
                 <directory>src/ua/edu/sumdu/j2se/vladislavY/tasks/view</directory>
                 <targetPath>ua/edu/sumdu/j2se/vladislavY/tasks/controller</targetPath>
                 <filtering>true</filtering>
                 <includes>
                     <include>*.fxml</include>
                 </includes>
-            </resource>
+            </resource>-->
 
             <resource>
                 <directory>src/resources</directory>

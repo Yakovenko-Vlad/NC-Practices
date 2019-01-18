@@ -93,7 +93,7 @@ public class TasksPageController {
     @FXML
     public void onAddTaskButtonClickListener() throws IOException {
         log.info("Add task button handler");
-        Parent root = FXMLLoader.load(getClass().getResource("addNewTaskView.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/ua/edu/sumdu/j2se/vladislavY/tasks/view/addNewTaskView.fxml"));
         Stage stage = new Stage();
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.initStyle(StageStyle.UNDECORATED);
@@ -146,7 +146,7 @@ public class TasksPageController {
         Map.Entry<Date, Set<Task>> row = tasks.getSelectionModel().getSelectedItem();
         if (row != null) {
             MainClass.setTaskForEditing(row.getValue().iterator().next());
-            Parent root = FXMLLoader.load(getClass().getResource("overviewTaskView.fxml"));//packaging issue
+            Parent root = FXMLLoader.load(getClass().getResource("/ua/edu/sumdu/j2se/vladislavY/tasks/view/overviewTaskView.fxml"));//packaging issue
             Stage stage = new Stage();
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.initStyle(StageStyle.UNDECORATED);
