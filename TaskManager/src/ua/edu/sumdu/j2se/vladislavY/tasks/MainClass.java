@@ -142,7 +142,7 @@ public class MainClass extends Application {
                                         MessageController.notificationDialog(str);
                                     }
                                 } catch (Exception e) {
-                                    e.printStackTrace();
+                                    log.error(e.toString());
                                 }
                             }
                         });

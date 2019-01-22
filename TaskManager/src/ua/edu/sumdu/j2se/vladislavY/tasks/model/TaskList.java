@@ -3,6 +3,8 @@ package ua.edu.sumdu.j2se.vladislavY.tasks.model;
 import java.io.Serializable;
 import java.util.Iterator;
 
+import org.apache.log4j.Logger;
+
 /**
  * Parent class for ArratTaskList and LinkedTaskList
  *
@@ -10,6 +12,7 @@ import java.util.Iterator;
  */
 public abstract class TaskList implements Iterable<Task>, Cloneable, Serializable {
 
+    protected final Logger log = Logger.getLogger(TaskList.class);
     protected int counter;
 
     protected TaskList() {
@@ -52,7 +55,7 @@ public abstract class TaskList implements Iterable<Task>, Cloneable, Serializabl
     public int hashCode() {
         int hash = 0;
         Iterator<Task> iterator = this.iterator();
-        while (iterator.hasNext()){
+        while (iterator.hasNext()) {
             hash += iterator.next().hashCode();
         }
         return hash;

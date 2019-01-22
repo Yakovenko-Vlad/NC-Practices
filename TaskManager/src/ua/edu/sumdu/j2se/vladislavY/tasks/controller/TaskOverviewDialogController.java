@@ -19,7 +19,6 @@ import java.util.Date;
 public class TaskOverviewDialogController {
     private ArrayTaskList tasks;
     private Task task;
-    private int index;
 
     @FXML
     private Button saveBtn;
@@ -54,7 +53,6 @@ public class TaskOverviewDialogController {
     public TaskOverviewDialogController() {
         this.tasks = MainClass.getTasks();
         this.task = MainClass.getTaskForEditing();
-        getTaskIndex();
     }
 
     @FXML
@@ -66,19 +64,6 @@ public class TaskOverviewDialogController {
         endDate.setText(formatter.format(task.getEndTime()));
         interval.setText(String.valueOf(task.getRepeatInterval()));
         isActive.setSelected(task.isActive());
-    }
-
-    /**
-     * Define task index in main tasks array
-     */
-    private void getTaskIndex() {
-        for (int i = 0; i < tasks.size(); i++) {
-            if (tasks.getTask(i).equals(task)) {
-                index = i;
-                log.info("Tasks index for editing - " + index);
-                return;
-            }
-        }
     }
 
     @FXML

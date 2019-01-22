@@ -118,7 +118,7 @@ public class ArrayTaskList extends TaskList {
             try {
                 arrayTaskList.add(iterator.next());
             } catch (Exception e) {
-                e.printStackTrace();
+                log.error(e.toString());
             }
         }
         return arrayTaskList;

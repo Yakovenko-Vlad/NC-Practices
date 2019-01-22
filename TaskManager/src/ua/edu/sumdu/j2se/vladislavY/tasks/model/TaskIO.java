@@ -7,9 +7,20 @@ import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.apache.log4j.Logger;
+
+
 public class TaskIO {
     public static final String DATE_PATTERN = "[yyyy-MM-dd HH:mm:ss.SSS]";
+    private static final Logger log = Logger.getLogger(TaskIO.class);
 
+    /**
+     * Write tasks list to the stream
+     *
+     * @param tasks tasks list
+     * @param out   stream
+     * @throws IOException
+     */
     public static void write(TaskList tasks, OutputStream out) throws IOException {
         DataOutputStream dataOutputStream = new DataOutputStream(out);
         try {
@@ -26,13 +37,20 @@ public class TaskIO {
                     dataOutputStream.writeLong(task.getTime().getTime());
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error(e.toString());
         } finally {
             dataOutputStream.flush();
             dataOutputStream.close();
         }
     }
 
+    /**
+     * Read tasks list to the stream
+     *
+     * @param tasks tasks list
+     * @param in    stream
+     * @throws IOException
+     */
     public static void read(TaskList tasks, InputStream in) throws IOException {
         DataInputStream dataInputStream = new DataInputStream(in);
         try {
@@ -55,43 +73,62 @@ public class TaskIO {
                 tasks.add(task);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error(e.toString());
         } finally {
             dataInputStream.close();
         }
     }
 
+    /**
+     * Write binary tasks list to the file
+     *
+     * @param tasks tasks list
+     * @param file  where to write the list
+     */
     public static void writeBinary(TaskList tasks, File file) {
         try {
             FileOutputStream fileOutputStream = new FileOutputStream(file);
             write(tasks, fileOutputStream);
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            log.error(e.toString());
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error(e.toString());
         }
     }
 
+    /**
+     * Read binary tasks list to the file
+     *
+     * @param tasks tasks list
+     * @param file  where to read the list
+     */
     public static void readBinary(TaskList tasks, File file) {
         try {
             FileInputStream fileInputStream = new FileInputStream(file);
             read(tasks, fileInputStream);
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            log.error(e.toString());
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error(e.toString());
         }
     }
 
+    /**
+     * Write tasks list to the writer
+     *
+     * @param tasks tasks list
+     * @param out   Output stream
+     * @throws IOException
+     */
     public static void write(TaskList tasks, Writer out) throws IOException {
         int counter = 0;
         try {
             for (Task task : tasks) {
                 out.write("\"" + task.getTitle().replaceAll("\"", "\"\"") + "\"");
-                if (!task.isRepeated()) {
+                if (!task.isRepeated()) { // not reapeated task
                     out.append(" at " + dateFormater(task.getTime()));
                     out.append(task.isActive() ? " active" : " inactive");
-                } else {
+                } else { // repeated task
                     out.append(" from " + dateFormater(task.getStartTime()) + " to ");
                     out.append(dateFormater(task.getEndTime()) + " every ");
                     out.append(intervalFormater(task.getRepeatInterval()));
@@ -104,29 +141,42 @@ public class TaskIO {
             }
             out.write("");
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error(e.toString());
         } finally {
             out.flush();
             out.close();
         }
     }
 
+    /**
+     * Convert date to the string according to the given format
+     *
+     * @param date date
+     * @return date, converted to the string
+     */
     public static StringBuffer dateFormater(Date date) {
         StringBuffer stringBuffer = new StringBuffer();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(DATE_PATTERN);
         return simpleDateFormat.format(date, stringBuffer, new FieldPosition(0));
     }
 
+    /**
+     * Convert task interval to the string
+     *
+     * @param milliseconds task interval
+     * @return milliseconds, converted to he string
+     */
     public static String intervalFormater(long milliseconds) {
         long seconds = milliseconds / 1000;
         long minutes = seconds / 60;
         long hours = minutes / 60;
         long days = hours / 24;
+        //getting integer values ​​of each parameter
         hours %= 24;
         minutes %= 60;
         seconds %= 60;
-        String time = "[";
-        time += days > 0 ? days + (days > 1 ? " days " : " day ") : "";
+        String time = "["; // -> joins days, hours, minutes and seconds if each value is not 0;
+        time += days > 0 ? days + (days > 1 ? " days " : " day ") : "";// an ending is added for each plural value
         time += hours > 0 ? hours + (hours > 1 ? " hours " : " hour ") : "";
         time += minutes > 0 ? minutes + (minutes > 1 ? " minutes " : " minute ") : "";
         time += seconds > 0 ? seconds + (seconds > 1 ? " seconds" : " second") : "";
@@ -134,6 +184,13 @@ public class TaskIO {
         return time;
     }
 
+    /**
+     * Read tasks list from the reader
+     *
+     * @param tasks tasks list
+     * @param in    Input stream
+     * @throws IOException
+     */
     public static void read(TaskList tasks, Reader in) throws IOException {
         try {
             BufferedReader reader = new BufferedReader(in);
@@ -150,16 +207,29 @@ public class TaskIO {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error(e.toString());
         } finally {
             in.close();
         }
     }
 
+    /**
+     * Checks if read task is active
+     *
+     * @param line
+     * @return
+     */
     public static boolean checkActive(String line) {
         return line.contains("inactive") ? false : true;
     }
 
+    /**
+     * Parses task string and returns interval in ms. Gets latest text in [], convert to String array and
+     * depending on the number of items - multiplies by the required value (H-3600б, M-60, MS-1)
+     *
+     * @param line
+     * @return task interval
+     */
     public static int parseInterval(String line) {
         String[] numbers = line.substring(line.lastIndexOf("[") + 1, line.lastIndexOf("]")).split(" ");
         int interval = 0;
@@ -179,10 +249,24 @@ public class TaskIO {
         return interval;
     }
 
+    /**
+     * Parses task title from string
+     *
+     * @param line
+     * @return task title
+     */
     public static String parseTitle(String line) {
         return line.substring(1, line.lastIndexOf("\"")).replaceAll("\"\"", "\"");
     }
 
+
+    /**
+     * Parses string from file to get task dates
+     *
+     * @param line
+     * @return array of the task dates (time or start/end)
+     * @throws ParseException
+     */
     public static Date[] parseDate(String line) throws ParseException {
         SimpleDateFormat format = new SimpleDateFormat();
         format.applyPattern(DATE_PATTERN);
@@ -192,21 +276,33 @@ public class TaskIO {
         return dates;
     }
 
+    /**
+     * Write tasks list to the given file
+     *
+     * @param tasks tasks list
+     * @param file  where to read the list
+     */
     public static void writeText(TaskList tasks, File file) {
         try {
             FileWriter fileWriter = new FileWriter(file);
             write(tasks, fileWriter);
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error(e.toString());
         }
     }
 
+    /**
+     * Read tasks list from the given file
+     *
+     * @param tasks tasks list
+     * @param file  where to read the list
+     */
     public static void readText(TaskList tasks, File file) {
         try {
             FileReader fileReader = new FileReader(file);
             read(tasks, fileReader);
         } catch (IOException e) {
-            System.out.println("File is not created");
+            log.info("File is not created");
         }
     }
 }

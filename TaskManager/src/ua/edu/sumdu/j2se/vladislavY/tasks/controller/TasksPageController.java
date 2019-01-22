@@ -112,7 +112,7 @@ public class TasksPageController {
                 } catch (NullPointerException e) {
                     log.warn("Calendar for current period (" + new Date() + ", +1) is empty");
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    log.error(e.toString());
                 }
                 log.info("Add task dialog is closed, main tableView is reloaded");
             }
@@ -133,7 +133,7 @@ public class TasksPageController {
             } catch (NullPointerException e) {
                 MessageController.warnDialog("You don\'t have event in current period");
             } catch (Exception e) {
-                e.printStackTrace();
+                log.error(e.toString());
             }
         } catch (NullPointerException e) {
             MessageController.warnDialog("Please, enter valid date");
@@ -164,9 +164,9 @@ public class TasksPageController {
                         tasks.setItems(usersData);
                         tasks.getColumns().setAll(title, nextDate);
                     } catch (NullPointerException e) {
-                        System.out.println("The list of the tasks for selected period is empty");
+                        log.info("The list of the tasks for selected period is empty");
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        log.error(e.toString());
                     }
                     log.info("OverView task dialog is closed, main tableView is reloaded");
                 }

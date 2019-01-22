@@ -1,8 +1,11 @@
 package ua.edu.sumdu.j2se.vladislavY.tasks.model;
 
 import java.util.*;
+import org.apache.log4j.Logger;
+
 
 public class Tasks {
+    private static final Logger log = Logger.getLogger(Tasks.class);
 
     /**
      * Returns an array of tasks performed in the current period
@@ -20,6 +23,7 @@ public class Tasks {
                     if (task.nextTimeAfter(from).before(to) || task.nextTimeAfter(from).equals(to))
                         incomingList.add(task);
                 } catch (NullPointerException e) {
+                    log.info("Next task date is after 'from'");
                 }
         return incomingList;
     }
@@ -62,6 +66,7 @@ public class Tasks {
             for (Date i = task.nextTimeAfter(start); !end.before(i); i = task.nextTimeAfter(i))
                 dates.add(i);
         } catch (NullPointerException e) {
+            log.info("Next date is after 'end'");
         }
         return dates;
     }

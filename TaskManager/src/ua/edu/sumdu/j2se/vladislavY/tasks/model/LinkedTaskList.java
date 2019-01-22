@@ -133,7 +133,7 @@ public class LinkedTaskList extends TaskList {
             try {
                 linkedTaskList.add(iterator.next());
             } catch (Exception e) {
-                e.printStackTrace();
+                log.error(e.toString());
             }
         }
         return linkedTaskList;

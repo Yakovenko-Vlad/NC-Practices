@@ -1,5 +1,7 @@
 package ua.edu.sumdu.j2se.vladislavY.tasks.model;
 
+import org.apache.log4j.Logger;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -9,6 +11,8 @@ import java.util.Date;
  * @author vladislav
  */
 public class Task implements Cloneable, Serializable {
+    private static final Logger log = Logger.getLogger(Task.class);
+
     private String title;
     private Date time;
     private Date start;
@@ -145,7 +149,7 @@ public class Task implements Cloneable, Serializable {
         try {
             task = new Task(this.getTitle(), this.start, this.end, this.interval);
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error(e.toString());
         }
         return task;
     }
